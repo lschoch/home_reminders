@@ -73,6 +73,10 @@ class App(tk.Tk):
 
     # create top level window for entry of data for new item
     def create_new(self):
+        # remove any existing toplevels
+        remove_toplevels(self)
+
+        # create new toplevel
         top = tk.Toplevel(self, padx=20, pady=20)
         top.title("New Item")
         x = self.winfo_x()
@@ -166,6 +170,7 @@ class App(tk.Tk):
             return
 
         selected_item = self.tree.focus()
+        remove_toplevels(self)
 
         # create toplevel
         top = tk.Toplevel(self, padx=20, pady=20)
