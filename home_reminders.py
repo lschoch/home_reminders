@@ -2,6 +2,8 @@ import sqlite3
 import tkinter as tk
 from tkinter import messagebox, ttk  # noqa: F401
 
+from modules import create_tree_widget, remove_toplevels
+
 # connect to database and create cursor
 con = sqlite3.connect("home_reminders.db")
 cur = con.cursor()
@@ -61,62 +63,13 @@ class App(tk.Tk):
             column=1,
             pady=(20, 4),
         )
-        self.tree = self.create_tree_widget()
 
-    def create_tree_widget(self):
-        """
-        Create treeview to display data from database
-
-        Returns:
-            ttk.Treeview
-        """
-        columns = (
-            "id",
-            "description",
-            "frequency",
-            "period",
-            "date_last",
-            "date_next",
-            "source",
-        )
-        tree = ttk.Treeview(self, columns=columns, show="headings")
-
-        # define headings and columns
-        tree.heading("id", text="Id")
-        tree.heading("description", text="Item", anchor="w")
-        tree.heading("frequency", text="Frequency")
-        tree.heading("period", text="Period")
-        tree.heading("date_last", text="Last")
-        tree.heading("date_next", text="Next")
-        tree.heading("source", text="Source", anchor="w")
-        tree.column("id", width=50, anchor="center")
-        tree.column("description", anchor="w")
-        tree.column("frequency", width=65, anchor="center")
-        tree.column("period", width=75, anchor="center")
-        tree.column("date_last", width=100, anchor="center")
-        tree.column("date_next", width=100, anchor="center")
-        tree.column("source", width=200, anchor="w")
-        tree.focus()
-
-        tree.bind("<<TreeviewSelect>>", self.on_treeview_selection_changed)
-        tree.grid(row=1, column=1)
-
-        # add a scrollbar
-        scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=tree.yview)
-        tree.configure(yscroll=scrollbar.set)
-        scrollbar.grid(row=1, column=2, pady=20, sticky="ns")
+        # create treeview to display data
+        self.tree = create_tree_widget(self)
 
         # add data from database to the treeview
         for item in data:
-            tree.insert("", tk.END, values=item)
-
-        return tree
-
-    # function to destroy existing toplevels to prevent them from accumulating.
-    def remove_toplevels(self):
-        for widget in self.winfo_children():
-            if isinstance(widget, tk.Toplevel):
-                widget.destroy()
+            self.tree.insert("", tk.END, values=item)
 
     # create top level window for entry of data for new item
     def create_new(self):
@@ -178,7 +131,7 @@ class App(tk.Tk):
             source_entry.delete(0, tk.END)
 
         def cancel():
-            self.remove_toplevels()
+            remove_toplevels(self)
             self.tree.focus()
 
         ttk.Button(top, text="Save", command=save_item).grid(
@@ -205,32 +158,29 @@ class App(tk.Tk):
     def quit_program(self):
         self.destroy()
 
+    # create toplevel to manage row selection
     def on_treeview_selection_changed(self, event):
-        """
-        Create TopLevel to manage selected row(s)
-
-        :param event
-        :return: None
-        """
+        # abort if the selection change was after a refresh
         if self.refreshed:
             self.refreshed = False
             return
 
         selected_item = self.tree.focus()
 
+        # create toplevel
         top = tk.Toplevel(self, padx=20, pady=20)
         top.title("Selection")
         x = self.winfo_x()
         y = self.winfo_y()
         top.geometry("+%d+%d" % (x + 110, y + 335))
 
-        # create entry labels and widgets
+        # create entry labels and widgets for the top level
         ttk.Label(top, text="description", background="#ececec").grid(
             row=0, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
         )
         description_entry = ttk.Entry(top)
-
         description_entry.grid(row=0, column=1, padx=(0, 15), pady=(0, 15))
+
         ttk.Label(top, text="frequency", background="#ececec").grid(
             row=0, column=2, padx=5, pady=(0, 15), sticky="e"
         )
@@ -255,12 +205,14 @@ class App(tk.Tk):
         source_entry = ttk.Entry(top)
         source_entry.grid(row=1, column=3, padx=(0, 15), pady=(0, 15))
 
+        # populate entries with data from the selection
         description_entry.insert(0, self.tree.item(selected_item)["values"][1])
         frequency_entry.insert(0, self.tree.item(selected_item)["values"][2])
         period_entry.insert(0, self.tree.item(selected_item)["values"][3])
         date_last_entry.insert(0, self.tree.item(selected_item)["values"][4])
         source_entry.insert(0, self.tree.item(selected_item)["values"][6])
 
+        # update database
         def update_item():
             cur.execute(
                 """
@@ -278,9 +230,10 @@ class App(tk.Tk):
                 ),
             )
             con.commit()
-            self.remove_toplevels()
+            remove_toplevels(self)
             self.refresh()
 
+        # delete item from database
         def delete_item():
             id = self.tree.item(selected_item)["values"][0]
             cur.execute(
@@ -291,10 +244,10 @@ class App(tk.Tk):
             )
             con.commit()
             self.refresh()
-            self.remove_toplevels()
+            remove_toplevels(self)
 
         def cancel():
-            self.remove_toplevels()
+            remove_toplevels(self)
 
         ttk.Button(top, text="Update", command=update_item).grid(
             row=2, column=1, pady=(15, 0), sticky="w"
