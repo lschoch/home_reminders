@@ -42,16 +42,22 @@ class App(tk.Tk):
         # treeview_on_selection_changed after refresh
         self.refreshed = False
 
+        # flag to track whether coming from view_all or view_current
+        self.view_current = True
+
         # create main screen
         self.btn = ttk.Button(
-            self, text="New Item", command=self.create_new
-        ).grid(row=1, column=0, padx=20, pady=(40, 0), sticky="n")
-        self.btn = ttk.Button(self, text="Refresh", command=self.refresh).grid(
-            row=1, column=0, padx=20, sticky="ew"
+            self, text="Coming Up", command=self.coming_up
+        ).grid(row=1, column=0, padx=20, pady=(20, 0), sticky="n")
+        self.btn = ttk.Button(self, text="All", command=self.view_all).grid(
+            row=1, column=0, padx=20, pady=(72, 0), sticky="n"
+        )
+        self.btn = ttk.Button(self, text="New", command=self.create_new).grid(
+            row=1, column=0, padx=20, pady=(0, 72), sticky="s"
         )
         self.btn = ttk.Button(
             self, text="Quit", command=self.quit_program
-        ).grid(row=1, column=0, padx=20, pady=(0, 40), sticky="s")
+        ).grid(row=1, column=0, padx=20, pady=(0, 20), sticky="s")
         self.lbl = ttk.Label(
             self,
             text="Select row to update or delete.",
@@ -146,11 +152,34 @@ class App(tk.Tk):
             row=2, column=3, padx=(0, 48), pady=(15, 0), sticky="e"
         )
 
+    def coming_up(self):
+        self.view_current = True
+        self.refresh()
+
     def refresh(self):
+        if self.view_current:
+            data = cur.execute("""
+                SELECT * FROM reminders
+                WHERE date_next >= DATE('now')
+                ORDER BY date_next ASC
+            """)
+        else:
+            data = cur.execute("""
+                SELECT * FROM reminders
+                ORDER BY id ASC
+            """)
+
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+        for item in data:
+            self.tree.insert("", tk.END, values=item)
+        self.focus()
+        self.refreshed = True
+
+    def view_all(self):
         data = cur.execute("""
             SELECT * FROM reminders
-            WHERE date_next >= DATE('now')
-            ORDER BY date_next ASC
+            ORDER BY id ASC
         """)
         for item in self.tree.get_children():
             self.tree.delete(item)
@@ -158,6 +187,7 @@ class App(tk.Tk):
             self.tree.insert("", tk.END, values=item)
         self.focus()
         self.refreshed = True
+        self.view_current = False
 
     def quit_program(self):
         self.destroy()
