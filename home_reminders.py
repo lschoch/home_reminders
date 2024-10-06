@@ -127,29 +127,23 @@ class App(tk.Tk):
             def cal_done():
                 date_last_entry.delete(0, tk.END)
                 date_last_entry.insert(0, cal.selection_get())
-                top.destroy()
-                root.destroy()
+                top2.destroy()
 
-            root = tk.Tk()
-            root.withdraw()  # keep the root window from appearing
-
-            top = tk.Toplevel(root)
+            top2 = tk.Toplevel(top)
 
             cal = Calendar(
-                top,
+                top2,
                 font="Arial 14",
                 selectmode="day",
                 cursor="arrow",
                 locale="en_US",
                 date_pattern="yyyy/mm/dd",
                 foreground="black",
+                headersforeground="#ececec",
                 selectforeground="red",
             )
-            cal.pack(fill="both", expand=True)
-            ttk.Button(top, text="ok", command=cal_done).pack()
-
-            # selected_date = None
-            root.mainloop()
+            cal.grid(row=0, column=0)
+            ttk.Button(top2, text="ok", command=cal_done).grid(row=1, column=0)
 
         ######################################################
 
