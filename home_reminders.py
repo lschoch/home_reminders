@@ -214,7 +214,7 @@ class App(tk.Tk):
         else:
             data = cur.execute("""
                 SELECT * FROM reminders
-                ORDER BY id ASC
+                ORDER BY date_next ASC
             """)
 
         for item in self.tree.get_children():
@@ -227,7 +227,7 @@ class App(tk.Tk):
     def view_all(self):
         data = cur.execute("""
             SELECT * FROM reminders
-            ORDER BY id ASC
+            ORDER BY date_next ASC
         """)
         for item in self.tree.get_children():
             self.tree.delete(item)
