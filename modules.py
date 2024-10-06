@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox, ttk  # noqa: F401
 
+from tkcalendar import Calendar
+
 
 # create treeview to display data from database
 def create_tree_widget(self):
@@ -48,3 +50,29 @@ def remove_toplevels(self):
     for widget in self.winfo_children():
         if isinstance(widget, tk.Toplevel):
             widget.destroy()
+
+
+def get_date(self, date_last_entry):
+    def cal_done():
+        top.withdraw()
+        root.quit()
+
+    root = tk.Tk()
+    root.withdraw()  # keep the root window from appearing
+
+    top = tk.Toplevel(root)
+
+    cal = Calendar(
+        top,
+        font="Arial 14",
+        selectmode="day",
+        cursor="arrow",
+        locale="en_US",
+        date_pattern="yyyy/mm/dd",
+    )
+    cal.pack(fill="both", expand=True)
+    ttk.Button(top, text="ok", command=cal_done).pack()
+
+    # selected_date = None
+    root.mainloop()
+    self.date_last_entry.insert(0, cal.selection_get())

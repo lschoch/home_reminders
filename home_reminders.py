@@ -2,6 +2,8 @@ import sqlite3
 import tkinter as tk
 from tkinter import messagebox, ttk  # noqa: F401
 
+from tkcalendar import Calendar
+
 from modules import create_tree_widget, remove_toplevels
 
 # connect to database and create cursor
@@ -119,6 +121,38 @@ class App(tk.Tk):
         )
         source_entry = ttk.Entry(top)
         source_entry.grid(row=1, column=3, padx=(0, 15), pady=(0, 15))
+
+        #################################################
+
+        def get_date(self):
+            def cal_done():
+                top.withdraw()
+                root.quit()
+
+            root = tk.Tk()
+            root.withdraw()  # keep the root window from appearing
+
+            top = tk.Toplevel(root)
+
+            cal = Calendar(
+                top,
+                font="Arial 14",
+                selectmode="day",
+                cursor="arrow",
+                locale="en_US",
+                date_pattern="yyyy/mm/dd",
+            )
+            cal.pack(fill="both", expand=True)
+            ttk.Button(top, text="ok", command=cal_done).pack()
+
+            # selected_date = None
+            root.mainloop()
+            date_last_entry.delete(0, tk.END)
+            date_last_entry.insert(0, cal.selection_get())
+
+        ######################################################
+
+        date_last_entry.bind("<Return>", get_date)
 
         def save_item():
             data_get = (
