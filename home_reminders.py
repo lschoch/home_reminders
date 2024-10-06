@@ -130,6 +130,7 @@ class App(tk.Tk):
                 top2.destroy()
 
             top2 = tk.Toplevel(top)
+            top2.configure(background="#cacaca")
 
             cal = Calendar(
                 top2,
@@ -138,9 +139,14 @@ class App(tk.Tk):
                 cursor="arrow",
                 locale="en_US",
                 date_pattern="yyyy/mm/dd",
+                showweeknumbers="False",
                 foreground="black",
-                headersforeground="#ececec",
+                background="#cacaca",
+                headersbackground="#dbdbdb",
+                weekendbackground="white",
+                othermonthwebackground="#ececec",
                 selectforeground="red",
+                selectbackground="#dbdbdb",
             )
             cal.grid(row=0, column=0)
             ttk.Button(top2, text="ok", command=cal_done).grid(row=1, column=0)
