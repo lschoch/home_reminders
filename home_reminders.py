@@ -122,13 +122,15 @@ class App(tk.Tk):
         source_entry = ttk.Entry(top)
         source_entry.grid(row=1, column=3, padx=(0, 15), pady=(0, 15))
 
-        ######################################################
+        # function to select date from calendar
         def get_date(self):
+            # update date_last_entry after date is selected
             def cal_done():
                 date_last_entry.delete(0, tk.END)
                 date_last_entry.insert(0, cal.selection_get())
                 top2.destroy()
 
+            # create a toplevel on existing toplevel
             top2 = tk.Toplevel(top)
             top2.configure(background="#cacaca")
 
@@ -151,10 +153,10 @@ class App(tk.Tk):
             cal.grid(row=0, column=0)
             ttk.Button(top2, text="ok", command=cal_done).grid(row=1, column=0)
 
-        ######################################################
-
+        # bind return in date_last_entry to get_date
         date_last_entry.bind("<Return>", get_date)
 
+        # function to save new item to database
         def save_item():
             data_get = (
                 description_entry.get(),
@@ -164,11 +166,16 @@ class App(tk.Tk):
                 source_entry.get(),
             )
             cur.execute(
-                "INSERT INTO reminders (description, frequency, period, date_last, source) VALUES (?, ?, ?, ?, ?)",  # noqa: E501
+                """
+                INSERT INTO reminders (
+                    description, frequency, period, date_last, source)
+                VALUES (?, ?, ?, ?, ?)""",
                 data_get,
             )
             con.commit()
             self.refresh()
+
+            # clear entries in new item screen for another new item
             description_entry.delete(0, tk.END)
             frequency_entry.delete(0, tk.END)
             period_entry.delete(0, tk.END)
@@ -191,7 +198,9 @@ class App(tk.Tk):
         self.view_current = True
         self.refresh()
 
+    # function to update treeview after change to database
     def refresh(self):
+        # select data depending on the current view (all vs upcoming)
         if self.view_current:
             data = cur.execute("""
                 SELECT * FROM reminders
