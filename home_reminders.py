@@ -122,12 +122,13 @@ class App(tk.Tk):
         source_entry = ttk.Entry(top)
         source_entry.grid(row=1, column=3, padx=(0, 15), pady=(0, 15))
 
-        #################################################
-
+        ######################################################
         def get_date(self):
             def cal_done():
-                top.withdraw()
-                root.quit()
+                date_last_entry.delete(0, tk.END)
+                date_last_entry.insert(0, cal.selection_get())
+                top.destroy()
+                root.destroy()
 
             root = tk.Tk()
             root.withdraw()  # keep the root window from appearing
@@ -141,14 +142,14 @@ class App(tk.Tk):
                 cursor="arrow",
                 locale="en_US",
                 date_pattern="yyyy/mm/dd",
+                foreground="black",
+                selectforeground="red",
             )
             cal.pack(fill="both", expand=True)
             ttk.Button(top, text="ok", command=cal_done).pack()
 
             # selected_date = None
             root.mainloop()
-            date_last_entry.delete(0, tk.END)
-            date_last_entry.insert(0, cal.selection_get())
 
         ######################################################
 
