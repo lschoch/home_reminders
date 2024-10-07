@@ -51,7 +51,7 @@ def remove_toplevels(self):
             widget.destroy()
 
 
-# insert data from database into the treeview, use id as tag
+# insert data from database into the treeview, use id as tag,
 # color rows where date_next is None or before today (expired)
 def insert_data(self, data):
     for item in data:
@@ -60,5 +60,7 @@ def insert_data(self, data):
             self.tree.tag_configure(item[0], background="yellow")
         else:
             dat_nxt = datetime.strptime(item[5], "%Y-%m-%d").date()
-            if dat_nxt <= date.today():
+            if dat_nxt < date.today():
                 self.tree.tag_configure(item[0], background="yellow")
+            elif dat_nxt == date.today():
+                self.tree.tag_configure(item[0], background="cyan")
