@@ -39,7 +39,7 @@ def create_tree_widget(self):
     # add a scrollbar
     scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=tree.yview)
     tree.configure(yscroll=scrollbar.set)
-    scrollbar.grid(row=1, column=2, pady=20, sticky="ns")
+    scrollbar.grid(row=1, column=2, pady=(0, 0), sticky="ns")
 
     return tree
 
@@ -60,5 +60,5 @@ def insert_data(self, data):
             self.tree.tag_configure(item[0], background="yellow")
         else:
             dat_nxt = datetime.strptime(item[5], "%Y-%m-%d").date()
-            if dat_nxt < date.today():
+            if dat_nxt <= date.today():
                 self.tree.tag_configure(item[0], background="yellow")
