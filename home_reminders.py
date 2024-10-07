@@ -1,10 +1,11 @@
 import sqlite3
 import tkinter as tk
+from datetime import date, datetime  # noqa: F401
 from tkinter import messagebox, ttk  # noqa: F401
 
 from tkcalendar import Calendar
 
-from modules import create_tree_widget, remove_toplevels
+from modules import create_tree_widget, insert_data, remove_toplevels
 
 # connect to database and create cursor
 con = sqlite3.connect("home_reminders.db")
@@ -40,7 +41,7 @@ class App(tk.Tk):
         self.style = ttk.Style()
         self.style.theme_use("clam")
 
-        # create variable to prevent activation of
+        # create variable to prevent calling
         # treeview_on_selection_changed after refresh
         self.refreshed = False
 
@@ -48,9 +49,9 @@ class App(tk.Tk):
         self.view_current = True
 
         # create main screen
-        self.btn = ttk.Button(
-            self, text="Coming Up", command=self.coming_up
-        ).grid(row=1, column=0, padx=20, pady=(20, 0), sticky="n")
+        self.btn = ttk.Button(self, text="Pending", command=self.pending).grid(
+            row=1, column=0, padx=20, pady=(20, 0), sticky="n"
+        )
         self.btn = ttk.Button(self, text="All", command=self.view_all).grid(
             row=1, column=0, padx=20, pady=(72, 0), sticky="n"
         )
@@ -75,9 +76,8 @@ class App(tk.Tk):
         # create treeview to display data
         self.tree = create_tree_widget(self)
 
-        # add data from database to the treeview
-        for item in data:
-            self.tree.insert("", tk.END, values=item)
+        # add data to treeview
+        insert_data(self, data)
 
     # create top level window for entry of data for new item
     def create_new(self):
@@ -198,13 +198,13 @@ class App(tk.Tk):
             row=2, column=3, padx=(0, 48), pady=(15, 0), sticky="e"
         )
 
-    def coming_up(self):
+    def pending(self):
         self.view_current = True
         self.refresh()
 
     # function to update treeview after change to database
     def refresh(self):
-        # select data depending on the current view (all vs upcoming)
+        # select data depending on the current view (all vs pending)
         if self.view_current:
             data = cur.execute("""
                 SELECT * FROM reminders
@@ -219,8 +219,9 @@ class App(tk.Tk):
 
         for item in self.tree.get_children():
             self.tree.delete(item)
-        for item in data:
-            self.tree.insert("", tk.END, values=item)
+
+        insert_data(self, data)
+
         self.focus()
         self.refreshed = True
 
@@ -231,8 +232,7 @@ class App(tk.Tk):
         """)
         for item in self.tree.get_children():
             self.tree.delete(item)
-        for item in data:
-            self.tree.insert("", tk.END, values=item)
+        insert_data(self, data)
         self.focus()
         self.refreshed = True
         self.view_current = False

@@ -1,4 +1,5 @@
 import tkinter as tk
+from datetime import date, datetime
 from tkinter import messagebox, ttk  # noqa: F401
 
 
@@ -48,3 +49,16 @@ def remove_toplevels(self):
     for widget in self.winfo_children():
         if isinstance(widget, tk.Toplevel):
             widget.destroy()
+
+
+# insert data from database into the treeview, use id as tag
+# color rows where date_next is None or before today (expired)
+def insert_data(self, data):
+    for item in data:
+        self.tree.insert("", tk.END, values=item, tags=item[0])
+        if item[5] is None:
+            self.tree.tag_configure(item[0], background="yellow")
+        else:
+            dat_nxt = datetime.strptime(item[5], "%Y-%m-%d").date()
+            if dat_nxt < date.today():
+                self.tree.tag_configure(item[0], background="yellow")
