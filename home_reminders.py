@@ -23,10 +23,10 @@ cur.execute("""
         source TEXT)
 """)
 
-# select data for display
+# select data for display, bring NULLs forward so they don't get lost
 data = cur.execute("""
     SELECT * FROM reminders
-    WHERE date_next >= DATE('now')
+    WHERE date_next >= DATE('now') OR date_next IS NULL
     ORDER BY date_next ASC
 """)
 
@@ -208,7 +208,7 @@ class App(tk.Tk):
         if self.view_current:
             data = cur.execute("""
                 SELECT * FROM reminders
-                WHERE date_next >= DATE('now')
+                WHERE date_next >= DATE('now') OR date_next IS NULL
                 ORDER BY date_next ASC
             """)
         else:
