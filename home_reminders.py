@@ -62,17 +62,12 @@ class App(tk.Tk):
         self.btn = ttk.Button(
             self, text="Quit", command=self.quit_program
         ).grid(row=1, column=0, padx=20, pady=(0, 20), sticky="s")
-        self.lbl = ttk.Label(
+        self.view_lbl = ttk.Label(
             self,
-            text="Select row to update or delete.",
+            text="Pending items - select a row to update or delete.",
             background="#ececec",
             font=("Arial", 18),
-            anchor="center",
-        ).grid(
-            row=0,
-            column=1,
-            pady=(20, 4),
-        )
+        ).grid(row=0, column=1, padx=(5, 0), pady=(20, 4), sticky="w")
 
         # create treeview to display data
         self.tree = create_tree_widget(self)
@@ -159,7 +154,7 @@ class App(tk.Tk):
             ttk.Button(top2, text="ok", command=cal_done).grid(row=1, column=0)
 
         # bind return in date_last_entry to get_date
-        date_last_entry.bind("<Return>", get_date)
+        date_last_entry.bind("<1>", get_date)
 
         # function to save new item to database
         def save_item():
@@ -213,6 +208,9 @@ class App(tk.Tk):
                 WHERE date_next >= DATE('now') OR date_next IS NULL
                 ORDER BY date_next ASC
             """)
+            self.view_lbl.config(
+                text="Pending items - select a row to update or delete"
+            )
         else:
             data = cur.execute("""
                 SELECT * FROM reminders
