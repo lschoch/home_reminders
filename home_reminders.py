@@ -159,7 +159,7 @@ class App(tk.Tk):
             ttk.Button(top2, text="ok", command=cal_done).grid(row=1, column=0)
 
         # bind return in date_last_entry to get_date
-        date_last_entry.bind("<Return>", get_date)
+        date_last_entry.bind("<1>", get_date)
 
         # function to save new item to database
         def save_item():
