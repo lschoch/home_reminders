@@ -186,6 +186,7 @@ class App(tk.Tk):
             period_entry.delete(0, tk.END)
             date_last_entry.delete(0, tk.END)
             source_entry.delete(0, tk.END)
+            period_entry.set("")
 
         def cancel():
             remove_toplevels(self)
