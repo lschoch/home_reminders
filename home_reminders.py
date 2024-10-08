@@ -32,6 +32,7 @@ data = cur.execute("""
 """)
 
 
+# create the main window
 class App(tk.Tk):
     def __init__(self, **kw):
         super().__init__(**kw)
