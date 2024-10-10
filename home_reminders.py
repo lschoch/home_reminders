@@ -112,20 +112,21 @@ class App(tk.Tk):
             row=1, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
         )
         date_last_entry = ttk.Entry(top)
+        date_last_entry.insert(0, date.today())
         date_last_entry.grid(row=1, column=1, padx=(0, 15), pady=(0, 15))
+
+        # get_date_cmd calls get date (calendar pop-up)
+        def get_date_cmd(self):
+            get_date(date_last_entry)
+
+        # bind click in date_last_entry to get_date_cmd
+        date_last_entry.bind("<1>", get_date_cmd)
 
         ttk.Label(top, text="source", background="#ececec").grid(
             row=1, column=2, padx=(0, 5), pady=(0, 15), sticky="e"
         )
         source_entry = ttk.Entry(top)
         source_entry.grid(row=1, column=3, padx=(0, 15), pady=(0, 15))
-
-        # get_date_cmd calls get date (from calendar pop-up)
-        def get_date_cmd(self):
-            get_date(date_last_entry)
-
-        # bind click in date_last_entry to get_date_cmd
-        date_last_entry.bind("<1>", get_date_cmd)
 
         # function to save new item to database
         def save_item():
@@ -265,6 +266,13 @@ class App(tk.Tk):
         period_entry.insert(0, self.tree.item(selected_item)["values"][3])
         date_last_entry.insert(0, self.tree.item(selected_item)["values"][4])
         source_entry.insert(0, self.tree.item(selected_item)["values"][6])
+
+        # get_date_cmd calls get date (calendar pop-up)
+        def get_date_cmd(self):
+            get_date(date_last_entry)
+
+        # bind click in date_last_entry to get_date_cmd
+        date_last_entry.bind("<1>", get_date_cmd)
 
         # update database
         def update_item():

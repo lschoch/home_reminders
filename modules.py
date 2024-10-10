@@ -98,5 +98,6 @@ def get_date(date_last_entry):
         selectforeground="red",
         selectbackground="#dbdbdb",
     )
+    cal.selection_set(date_last_entry.get())
     cal.grid(row=0, column=0)
     ttk.Button(top2, text="ok", command=cal_done).grid(row=1, column=0)
