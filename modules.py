@@ -2,6 +2,8 @@ import tkinter as tk
 from datetime import date, datetime
 from tkinter import messagebox, ttk  # noqa: F401
 
+from tkcalendar import Calendar
+
 
 # create treeview to display data from database
 def create_tree_widget(self):
@@ -66,3 +68,35 @@ def insert_data(self, data):
                 self.tree.tag_configure(item[0], background="cyan")
             else:
                 self.tree.tag_configure(item[0], background="white")
+
+
+# function to select date from calendar
+def get_date(date_last_entry):
+    # update date_last_entry after date is selected
+    def cal_done():
+        date_last_entry.delete(0, tk.END)
+        date_last_entry.insert(0, cal.selection_get())
+        top2.destroy()
+
+    # create a toplevel on existing toplevel
+    top2 = tk.Toplevel()
+    top2.configure(background="#cacaca")
+
+    cal = Calendar(
+        top2,
+        font="Arial 14",
+        selectmode="day",
+        cursor="arrow",
+        locale="en_US",
+        date_pattern="yyyy/mm/dd",
+        showweeknumbers="False",
+        foreground="black",
+        background="#cacaca",
+        headersbackground="#dbdbdb",
+        weekendbackground="white",
+        othermonthwebackground="#ececec",
+        selectforeground="red",
+        selectbackground="#dbdbdb",
+    )
+    cal.grid(row=0, column=0)
+    ttk.Button(top2, text="ok", command=cal_done).grid(row=1, column=0)

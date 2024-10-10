@@ -3,9 +3,7 @@ import tkinter as tk
 from datetime import date, datetime  # noqa: F401
 from tkinter import messagebox, ttk  # noqa: F401
 
-from tkcalendar import Calendar
-
-from modules import create_tree_widget, insert_data, remove_toplevels
+from modules import create_tree_widget, get_date, insert_data, remove_toplevels
 
 # connect to database and create cursor
 con = sqlite3.connect("home_reminders.db")
@@ -122,39 +120,12 @@ class App(tk.Tk):
         source_entry = ttk.Entry(top)
         source_entry.grid(row=1, column=3, padx=(0, 15), pady=(0, 15))
 
-        # function to select date from calendar
-        def get_date(self):
-            # update date_last_entry after date is selected
-            def cal_done():
-                date_last_entry.delete(0, tk.END)
-                date_last_entry.insert(0, cal.selection_get())
-                top2.destroy()
+        # get_date_cmd calls get date (from calendar pop-up)
+        def get_date_cmd(self):
+            get_date(date_last_entry)
 
-            # create a toplevel on existing toplevel
-            top2 = tk.Toplevel(top)
-            top2.configure(background="#cacaca")
-
-            cal = Calendar(
-                top2,
-                font="Arial 14",
-                selectmode="day",
-                cursor="arrow",
-                locale="en_US",
-                date_pattern="yyyy/mm/dd",
-                showweeknumbers="False",
-                foreground="black",
-                background="#cacaca",
-                headersbackground="#dbdbdb",
-                weekendbackground="white",
-                othermonthwebackground="#ececec",
-                selectforeground="red",
-                selectbackground="#dbdbdb",
-            )
-            cal.grid(row=0, column=0)
-            ttk.Button(top2, text="ok", command=cal_done).grid(row=1, column=0)
-
-        # bind return in date_last_entry to get_date
-        date_last_entry.bind("<1>", get_date)
+        # bind click in date_last_entry to get_date_cmd
+        date_last_entry.bind("<1>", get_date_cmd)
 
         # function to save new item to database
         def save_item():
