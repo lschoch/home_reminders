@@ -116,8 +116,8 @@ class App(tk.Tk):
         date_last_entry.grid(row=1, column=1, padx=(0, 15), pady=(0, 15))
 
         # get_date_cmd calls get date (calendar pop-up)
-        def get_date_cmd(self):
-            get_date(date_last_entry)
+        def get_date_cmd(event):
+            get_date(date_last_entry, top)
 
         # bind click in date_last_entry to get_date_cmd
         date_last_entry.bind("<1>", get_date_cmd)
@@ -269,7 +269,7 @@ class App(tk.Tk):
 
         # get_date_cmd calls get date (calendar pop-up)
         def get_date_cmd(self):
-            get_date(date_last_entry)
+            get_date(date_last_entry, top)
 
         # bind click in date_last_entry to get_date_cmd
         date_last_entry.bind("<1>", get_date_cmd)

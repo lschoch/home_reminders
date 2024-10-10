@@ -53,8 +53,8 @@ def remove_toplevels(self):
             widget.destroy()
 
 
-# insert data from database into the treeview, use id as tag,
-# color rows where date_next is None or before today (expired)
+# insert data from database into the treeview, use id as tag
+# to color rows
 def insert_data(self, data):
     for item in data:
         self.tree.insert("", tk.END, values=item, tags=item[0])
@@ -70,17 +70,30 @@ def insert_data(self, data):
                 self.tree.tag_configure(item[0], background="white")
 
 
-# function to select date from calendar
-def get_date(date_last_entry):
-    # update date_last_entry after date is selected
+# function to select date from a calendar
+def get_date(date_last_entry, top):
+    # destroy calendar if it already exists
+    # (prevents multiple overlying calendars on repeatedly clicking the entry)
+    for child in top.winfo_children():
+        if isinstance(child, tk.Toplevel):
+            child.destroy()
+
+    # update date_last_entry after date is selected with OK button
     def cal_done():
         date_last_entry.delete(0, tk.END)
         date_last_entry.insert(0, cal.selection_get())
         top2.destroy()
 
-    # create a toplevel on existing toplevel
-    top2 = tk.Toplevel()
+    def cal_cancel():
+        top2.destroy()
+
+    # create a toplevel for the calendar
+    top2 = tk.Toplevel(top)
+    top2.title("Calendar")
     top2.configure(background="#cacaca")
+    top2.geometry("+163+175")
+    # keep calendar in front of it' parent window
+    top2.wm_transient(top)
 
     cal = Calendar(
         top2,
@@ -100,4 +113,9 @@ def get_date(date_last_entry):
     )
     cal.selection_set(date_last_entry.get())
     cal.grid(row=0, column=0)
-    ttk.Button(top2, text="ok", command=cal_done).grid(row=1, column=0)
+    ttk.Button(top2, text="ok", width=2, command=cal_done).grid(
+        row=1, column=0, padx=(80, 0), pady=3, sticky="w"
+    )
+    ttk.Button(top2, text="cancel", width=5, command=cal_cancel).grid(
+        row=1, column=0, padx=(0, 80), sticky="e"
+    )
