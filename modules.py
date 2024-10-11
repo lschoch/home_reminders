@@ -90,9 +90,13 @@ def get_date(date_last_entry, top):
 
     # create a toplevel for the calendar
     top2 = tk.Toplevel(top)
+    # remove title bar
     top2.overrideredirect(True)
     top2.configure(background="#cacaca")
-    top2.geometry("+163+175")
+    x = top.winfo_x()
+    y = top.winfo_y()
+    top2.geometry("+%d+%d" % (x + 50, y + 175))
+
     # keep calendar in front of it' parent window
     top2.wm_transient(top)
 
