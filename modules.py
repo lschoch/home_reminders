@@ -95,7 +95,7 @@ def get_date(date_last_entry, top):
     top2.configure(background="#cacaca")
     x = top.winfo_x()
     y = top.winfo_y()
-    top2.geometry("+%d+%d" % (x + 50, y + 175))
+    top2.geometry("+%d+%d" % (x + 48, y + 120))
 
     # keep calendar in front of it' parent window
     top2.wm_transient(top)
