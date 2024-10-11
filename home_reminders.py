@@ -53,6 +53,9 @@ class App(tk.Tk):
         # flag to track whether coming from view_all or view_current
         self.view_current = True
 
+        self.lbl_msg = tk.StringVar()
+        self.lbl_msg.set("Pending items - select a row to update or delete")
+
         # create main screen
         self.btn = ttk.Button(self, text="Pending", command=self.pending).grid(
             row=1, column=0, padx=20, pady=(20, 0), sticky="n"
@@ -68,7 +71,7 @@ class App(tk.Tk):
         ).grid(row=1, column=0, padx=20, pady=(0, 20), sticky="s")
         self.view_lbl = ttk.Label(
             self,
-            text="Pending items - select a row to update or delete.",
+            textvariable=self.lbl_msg,
             background="#ececec",
             font=("Arial", 18),
         ).grid(row=0, column=1, padx=(5, 0), pady=(20, 4), sticky="w")
@@ -175,9 +178,11 @@ class App(tk.Tk):
 
     def pending(self):
         self.view_current = True
+        self.lbl_msg.set("Pending items - select a row to update or delete")
         refresh(self)
 
     def view_all(self):
+        self.lbl_msg.set("All items - select a row to update or delete")
         data = cur.execute("""
             SELECT * FROM reminders
             ORDER BY date_next ASC
