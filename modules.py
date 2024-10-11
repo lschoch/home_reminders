@@ -1,3 +1,4 @@
+import sqlite3
 import tkinter as tk
 from datetime import date, datetime
 from tkinter import messagebox, ttk  # noqa: F401
@@ -53,8 +54,8 @@ def remove_toplevels(self):
             widget.destroy()
 
 
-# insert data from database into the treeview, use id as tag
-# to color rows
+# function to insert data from database into the treeview,
+# use id as tag to color rows
 def insert_data(self, data):
     for item in data:
         self.tree.insert("", tk.END, values=item, tags=item[0])
@@ -119,3 +120,30 @@ def get_date(date_last_entry, top):
     ttk.Button(top2, text="cancel", width=5, command=cal_cancel).grid(
         row=1, column=0, padx=(0, 80), sticky="e"
     )
+
+
+# function to update treeview after change to database
+def refresh(self):
+    # connect to database and create cursor
+    self.con = sqlite3.connect("home_reminders.db")
+    self.cur = self.con.cursor()
+    # select data depending on the current view (all vs pending)
+    if self.view_current:
+        data = self.cur.execute("""
+            SELECT * FROM reminders
+            WHERE date_next >= DATE('now') OR date_next IS NULL
+            ORDER BY date_next ASC
+        """)
+    else:
+        data = self.cur.execute("""
+            SELECT * FROM reminders
+            ORDER BY date_next ASC
+        """)
+
+    for item in self.tree.get_children():
+        self.tree.delete(item)
+
+    insert_data(self, data)
+
+    self.focus()
+    self.refreshed = True

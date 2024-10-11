@@ -3,7 +3,13 @@ import tkinter as tk
 from datetime import date, datetime  # noqa: F401
 from tkinter import messagebox, ttk  # noqa: F401
 
-from modules import create_tree_widget, get_date, insert_data, remove_toplevels
+from modules import (
+    create_tree_widget,
+    get_date,
+    insert_data,
+    refresh,
+    remove_toplevels,
+)
 
 # connect to database and create cursor
 con = sqlite3.connect("home_reminders.db")
@@ -145,7 +151,7 @@ class App(tk.Tk):
                 data_get,
             )
             con.commit()
-            self.refresh()
+            refresh(self)
 
             # clear entries in new item screen for another new item
             description_entry.delete(0, tk.END)
@@ -169,33 +175,7 @@ class App(tk.Tk):
 
     def pending(self):
         self.view_current = True
-        self.refresh()
-
-    # function to update treeview after change to database
-    def refresh(self):
-        # select data depending on the current view (all vs pending)
-        if self.view_current:
-            data = cur.execute("""
-                SELECT * FROM reminders
-                WHERE date_next >= DATE('now') OR date_next IS NULL
-                ORDER BY date_next ASC
-            """)
-            self.view_lbl.config(
-                text="Pending items - select a row to update or delete"
-            )
-        else:
-            data = cur.execute("""
-                SELECT * FROM reminders
-                ORDER BY date_next ASC
-            """)
-
-        for item in self.tree.get_children():
-            self.tree.delete(item)
-
-        insert_data(self, data)
-
-        self.focus()
-        self.refreshed = True
+        refresh(self)
 
     def view_all(self):
         data = cur.execute("""
@@ -293,7 +273,7 @@ class App(tk.Tk):
             )
             con.commit()
             remove_toplevels(self)
-            self.refresh()
+            refresh(self)
 
         # delete item from database
         def delete_item():
@@ -305,7 +285,7 @@ class App(tk.Tk):
                 (id,),
             )
             con.commit()
-            self.refresh()
+            refresh(self)
             remove_toplevels(self)
 
         def cancel():
