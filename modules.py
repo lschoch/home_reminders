@@ -90,7 +90,7 @@ def get_date(date_last_entry, top):
 
     # create a toplevel for the calendar
     top2 = tk.Toplevel(top)
-    top2.title("Calendar")
+    top2.overrideredirect(True)
     top2.configure(background="#cacaca")
     top2.geometry("+163+175")
     # keep calendar in front of it' parent window
