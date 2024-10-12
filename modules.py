@@ -34,7 +34,11 @@ class TopLvl(tk.Toplevel):
         ttk.Label(self, text="period", background="#ececec").grid(
             row=0, column=4, padx=5, pady=(0, 15), sticky="e"
         )
-        self.period_entry = ttk.Entry(self)
+        self.period_entry = ttk.Combobox(
+            self,
+            state="readonly",
+            values=["days", "weeks", "months", "years"],
+        )
         self.period_entry.grid(row=0, column=5, pady=(0, 15))
 
         ttk.Label(self, text="date_last", background="#ececec").grid(
