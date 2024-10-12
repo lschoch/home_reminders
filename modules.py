@@ -6,6 +6,50 @@ from tkinter import messagebox, ttk  # noqa: F401
 from tkcalendar import Calendar
 
 
+# create toplevel
+class TopLvl(tk.Toplevel):
+    def __init__(self, master, title):
+        super().__init__(master)
+        self.title(title)
+        self.config(padx=20, pady=20)
+        x = master.winfo_x()
+        y = master.winfo_y()
+        self.geometry("+%d+%d" % (x + 110, y + 335))
+
+        # create entry labels and widgets for the top level
+        ttk.Label(self, text="description", background="#ececec").grid(
+            row=0, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
+        )
+        self.description_entry = ttk.Entry(self)
+        self.description_entry.grid(
+            row=0, column=1, padx=(0, 15), pady=(0, 15)
+        )
+
+        ttk.Label(self, text="frequency", background="#ececec").grid(
+            row=0, column=2, padx=5, pady=(0, 15), sticky="e"
+        )
+        self.frequency_entry = ttk.Entry(self)
+        self.frequency_entry.grid(row=0, column=3, padx=(0, 15), pady=(0, 15))
+
+        ttk.Label(self, text="period", background="#ececec").grid(
+            row=0, column=4, padx=5, pady=(0, 15), sticky="e"
+        )
+        self.period_entry = ttk.Entry(self)
+        self.period_entry.grid(row=0, column=5, pady=(0, 15))
+
+        ttk.Label(self, text="date_last", background="#ececec").grid(
+            row=1, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
+        )
+        self.date_last_entry = ttk.Entry(self)
+        self.date_last_entry.grid(row=1, column=1, padx=(0, 15), pady=(0, 15))
+
+        ttk.Label(self, text="source", background="#ececec").grid(
+            row=1, column=2, padx=(0, 5), pady=(0, 15), sticky="e"
+        )
+        self.source_entry = ttk.Entry(self)
+        self.source_entry.grid(row=1, column=3, padx=(0, 15), pady=(0, 15))
+
+
 # create treeview to display data from database
 def create_tree_widget(self):
     columns = (
@@ -97,7 +141,7 @@ def get_date(date_last_entry, top):
     y = top.winfo_y()
     top2.geometry("+%d+%d" % (x + 48, y + 120))
 
-    # keep calendar in front of it' parent window
+    # keep calendar in front of it's parent window
     top2.wm_transient(top)
 
     cal = Calendar(
@@ -116,7 +160,10 @@ def get_date(date_last_entry, top):
         selectforeground="red",
         selectbackground="#dbdbdb",
     )
-    cal.selection_set(date_last_entry.get())
+    # if date_last_entry is not empty, set calendar to date_last_entry
+    if top.date_last_entry.get():
+        cal.selection_set(top.date_last_entry.get())
+
     cal.grid(row=0, column=0)
     ttk.Button(top2, text="ok", width=2, command=cal_done).grid(
         row=1, column=0, padx=(80, 0), pady=3, sticky="w"

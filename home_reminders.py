@@ -4,6 +4,7 @@ from datetime import date, datetime  # noqa: F401
 from tkinter import messagebox, ttk  # noqa: F401
 
 from modules import (
+    TopLvl,
     create_tree_widget,
     get_date,
     insert_data,
@@ -88,63 +89,23 @@ class App(tk.Tk):
         remove_toplevels(self)
 
         # create new toplevel
-        top = tk.Toplevel(self, padx=20, pady=20)
-        top.title("New Item")
-        x = self.winfo_x()
-        y = self.winfo_y()
-        top.geometry("+%d+%d" % (x + 110, y + 335))
-
-        # create entry labels and widgets
-        ttk.Label(top, text="description", background="#ececec").grid(
-            row=0, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
-        )
-        description_entry = ttk.Entry(top)
-
-        description_entry.grid(row=0, column=1, padx=(0, 15), pady=(0, 15))
-        ttk.Label(top, text="frequency", background="#ececec").grid(
-            row=0, column=2, padx=5, pady=(0, 15), sticky="e"
-        )
-        frequency_entry = ttk.Entry(top)
-        frequency_entry.grid(row=0, column=3, padx=(0, 15), pady=(0, 15))
-
-        ttk.Label(top, text="period", background="#ececec").grid(
-            row=0, column=4, padx=5, pady=(0, 15), sticky="e"
-        )
-        period_entry = ttk.Combobox(
-            top,
-            state="readonly",
-            values=["days", "weeks", "months", "years"],
-        )
-        period_entry.grid(row=0, column=5, pady=(0, 15))
-
-        ttk.Label(top, text="date_last", background="#ececec").grid(
-            row=1, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
-        )
-        date_last_entry = ttk.Entry(top)
-        date_last_entry.insert(0, date.today())
-        date_last_entry.grid(row=1, column=1, padx=(0, 15), pady=(0, 15))
+        top = TopLvl(self, "New Item")
 
         # get_date_cmd calls get date (calendar pop-up)
         def get_date_cmd(event):
-            get_date(date_last_entry, top)
+            get_date(top.date_last_entry, top)
 
         # bind click in date_last_entry to get_date_cmd
-        date_last_entry.bind("<1>", get_date_cmd)
-
-        ttk.Label(top, text="source", background="#ececec").grid(
-            row=1, column=2, padx=(0, 5), pady=(0, 15), sticky="e"
-        )
-        source_entry = ttk.Entry(top)
-        source_entry.grid(row=1, column=3, padx=(0, 15), pady=(0, 15))
+        top.date_last_entry.bind("<1>", get_date_cmd)
 
         # function to save new item to database
         def save_item():
             data_get = (
-                description_entry.get(),
-                frequency_entry.get(),
-                period_entry.get(),
-                date_last_entry.get(),
-                source_entry.get(),
+                top.description_entry.get(),
+                top.frequency_entry.get(),
+                top.period_entry.get(),
+                top.date_last_entry.get(),
+                top.source_entry.get(),
             )
             cur.execute(
                 """
@@ -157,12 +118,12 @@ class App(tk.Tk):
             refresh(self)
 
             # clear entries in new item screen for another new item
-            description_entry.delete(0, tk.END)
-            frequency_entry.delete(0, tk.END)
-            period_entry.delete(0, tk.END)
-            date_last_entry.delete(0, tk.END)
-            source_entry.delete(0, tk.END)
-            period_entry.set("")
+            top.description_entry.delete(0, tk.END)
+            top.frequency_entry.delete(0, tk.END)
+            top.period_entry.delete(0, tk.END)
+            top.date_last_entry.delete(0, tk.END)
+            top.source_entry.delete(0, tk.END)
+            top.period_entry.set("")
 
         def cancel():
             remove_toplevels(self)
@@ -208,56 +169,27 @@ class App(tk.Tk):
         remove_toplevels(self)
 
         # create toplevel
-        top = tk.Toplevel(self, padx=20, pady=20)
-        top.title("Selection")
-        x = self.winfo_x()
-        y = self.winfo_y()
-        top.geometry("+%d+%d" % (x + 110, y + 335))
-
-        # create entry labels and widgets for the top level
-        ttk.Label(top, text="description", background="#ececec").grid(
-            row=0, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
-        )
-        description_entry = ttk.Entry(top)
-        description_entry.grid(row=0, column=1, padx=(0, 15), pady=(0, 15))
-
-        ttk.Label(top, text="frequency", background="#ececec").grid(
-            row=0, column=2, padx=5, pady=(0, 15), sticky="e"
-        )
-        frequency_entry = ttk.Entry(top)
-        frequency_entry.grid(row=0, column=3, padx=(0, 15), pady=(0, 15))
-
-        ttk.Label(top, text="period", background="#ececec").grid(
-            row=0, column=4, padx=5, pady=(0, 15), sticky="e"
-        )
-        period_entry = ttk.Entry(top)
-        period_entry.grid(row=0, column=5, pady=(0, 15))
-
-        ttk.Label(top, text="date_last", background="#ececec").grid(
-            row=1, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
-        )
-        date_last_entry = ttk.Entry(top)
-        date_last_entry.grid(row=1, column=1, padx=(0, 15), pady=(0, 15))
-
-        ttk.Label(top, text="source", background="#ececec").grid(
-            row=1, column=2, padx=(0, 5), pady=(0, 15), sticky="e"
-        )
-        source_entry = ttk.Entry(top)
-        source_entry.grid(row=1, column=3, padx=(0, 15), pady=(0, 15))
+        top = TopLvl(self, "Selection")
 
         # populate entries with data from the selection
-        description_entry.insert(0, self.tree.item(selected_item)["values"][1])
-        frequency_entry.insert(0, self.tree.item(selected_item)["values"][2])
-        period_entry.insert(0, self.tree.item(selected_item)["values"][3])
-        date_last_entry.insert(0, self.tree.item(selected_item)["values"][4])
-        source_entry.insert(0, self.tree.item(selected_item)["values"][6])
+        top.description_entry.insert(
+            0, self.tree.item(selected_item)["values"][1]
+        )
+        top.frequency_entry.insert(
+            0, self.tree.item(selected_item)["values"][2]
+        )
+        top.period_entry.insert(0, self.tree.item(selected_item)["values"][3])
+        top.date_last_entry.insert(
+            0, self.tree.item(selected_item)["values"][4]
+        )
+        top.source_entry.insert(0, self.tree.item(selected_item)["values"][6])
 
         # get_date_cmd calls get date (calendar pop-up)
         def get_date_cmd(self):
-            get_date(date_last_entry, top)
+            get_date(top.date_last_entry, top)
 
         # bind click in date_last_entry to get_date_cmd
-        date_last_entry.bind("<1>", get_date_cmd)
+        top.date_last_entry.bind("<1>", get_date_cmd)
 
         # update database
         def update_item():
@@ -268,11 +200,11 @@ class App(tk.Tk):
                     (?, ?, ?, ?, ?)
                 WHERE id = ? """,
                 (
-                    description_entry.get(),
-                    frequency_entry.get(),
-                    period_entry.get(),
-                    date_last_entry.get(),
-                    source_entry.get(),
+                    top.description_entry.get(),
+                    top.frequency_entry.get(),
+                    top.period_entry.get(),
+                    top.date_last_entry.get(),
+                    top.source_entry.get(),
                     self.tree.item(selected_item)["values"][0],
                 ),
             )
