@@ -16,6 +16,10 @@ class TopLvl(tk.Toplevel):
         y = master.winfo_y()
         self.geometry("+%d+%d" % (x + 110, y + 335))
 
+        # create list of values for period_combobox that will be be accessed
+        # outside the combobox configuration
+        self.period_list = ["", "days", "weeks", "months", "years"]
+
         # create entry labels and widgets for the top level
         ttk.Label(self, text="description", background="#ececec").grid(
             row=0, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
@@ -34,12 +38,12 @@ class TopLvl(tk.Toplevel):
         ttk.Label(self, text="period", background="#ececec").grid(
             row=0, column=4, padx=5, pady=(0, 15), sticky="e"
         )
-        self.period_entry = ttk.Combobox(
+        self.period_combobox = ttk.Combobox(
             self,
             state="readonly",
-            values=["days", "weeks", "months", "years"],
+            values=self.period_list,
         )
-        self.period_entry.grid(row=0, column=5, pady=(0, 15))
+        self.period_combobox.grid(row=0, column=5, pady=(0, 15))
 
         ttk.Label(self, text="date_last", background="#ececec").grid(
             row=1, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
@@ -131,15 +135,21 @@ def get_date(date_last_entry, top):
     def cal_done():
         date_last_entry.delete(0, tk.END)
         date_last_entry.insert(0, cal.selection_get())
+        # restore overrideredirect to False
+        top2.wm_overrideredirect(False)
         top2.destroy()
 
     def cal_cancel():
+        # restore overrideredirect to False
+        top2.wm_overrideredirect(False)
         top2.destroy()
 
     # create a toplevel for the calendar
     top2 = tk.Toplevel(top)
+
     # remove title bar
-    top2.overrideredirect(True)
+    top2.wm_overrideredirect(True)
+
     top2.configure(background="#cacaca")
     x = top.winfo_x()
     y = top.winfo_y()
@@ -199,6 +209,4 @@ def refresh(self):
         self.tree.delete(item)
 
     insert_data(self, data)
-
-    self.focus()
     self.refreshed = True
