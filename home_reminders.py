@@ -202,7 +202,7 @@ class App(tk.Tk):
         indx = top.period_list.index(
             self.tree.item(selected_item)["values"][3]
         )
-        # set the combobox value useing current function
+        # set the combobox value using current function
         top.period_combobox.current(indx)
         top.date_last_entry.insert(
             0, self.tree.item(selected_item)["values"][4]
