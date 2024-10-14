@@ -1,7 +1,6 @@
 import sqlite3
 import tkinter as tk
-from datetime import date, datetime, timedelta  # noqa: F401
-from tkinter import messagebox, ttk  # noqa: F401
+from tkinter import messagebox, ttk
 
 from modules import (
     TopLvl,
@@ -11,6 +10,7 @@ from modules import (
     insert_data,
     refresh,
     remove_toplevels,
+    valid_frequency,
 )
 
 # connect to database and create cursor
@@ -32,7 +32,7 @@ cur.execute("""
 # select data for display, bring NULLs forward so they don't get lost
 data = cur.execute("""
     SELECT * FROM reminders
-    WHERE date_next >= DATE('now') OR date_next IS NULL
+    WHERE date_next >= DATE('now')
     ORDER BY date_next ASC
 """)
 
@@ -100,6 +100,19 @@ class App(tk.Tk):
 
         # function to save new item to database
         def save_item():
+            # validate inputs
+            if not valid_frequency(top.frequency_entry.get()):
+                messagebox.showinfo(
+                    "Invalid Input", "Frequency requires a numeric input."
+                )
+                return
+
+            if not top.date_last_entry.get() or not top.period_combobox.get():
+                messagebox.showinfo(
+                    "Invalid Input", "Please select a period and a date_last."
+                )
+                return
+
             # calculate date_next
             date_last = top.date_last_entry.get()
             frequency = int(top.frequency_entry.get())

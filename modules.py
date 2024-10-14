@@ -1,7 +1,7 @@
 import sqlite3
 import tkinter as tk
 from datetime import date, datetime, timedelta  # noqa: F401
-from tkinter import messagebox, ttk  # noqa: F401
+from tkinter import ttk
 
 from dateutil.relativedelta import relativedelta
 from tkcalendar import Calendar
@@ -217,7 +217,7 @@ def refresh(self):
 def date_next_calc(date_last, frequency, period):
     match period:
         case "":
-            date_next = "None"
+            date_next = ""
         case "days":
             date_next = datetime.strptime(
                 date_last, "%Y-%m-%d"
@@ -239,3 +239,15 @@ def date_next_calc(date_last, frequency, period):
             ).date() + relativedelta(years=frequency)
             date_next = date_next.strftime("%Y-%m-%d")
     return date_next
+
+
+# create a validation function
+def valid_frequency(input_data):
+    if input_data:
+        try:
+            float(input_data)
+            return True
+        except ValueError:
+            return False
+    else:
+        return False
