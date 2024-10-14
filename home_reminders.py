@@ -218,17 +218,38 @@ class App(tk.Tk):
 
         # update database
         def update_item():
+            # validate inputs
+            if not valid_frequency(top.frequency_entry.get()):
+                messagebox.showinfo(
+                    "Invalid Input", "Frequency requires a numeric input."
+                )
+                return
+
+            if not top.date_last_entry.get() or not top.period_combobox.get():
+                messagebox.showinfo(
+                    "Invalid Input", "Please select a period and a date_last."
+                )
+                return
+
+            # calculate date_next
+            date_last = top.date_last_entry.get()
+            frequency = int(top.frequency_entry.get())
+            period = top.period_combobox.get()
+            date_next = date_next_calc(date_last, frequency, period)
+
             cur.execute(
                 """
                 UPDATE reminders
-                SET (description, frequency, period, date_last, source) =
-                    (?, ?, ?, ?, ?)
+                SET (
+                description, frequency, period, date_last, date_next, source) =
+                    (?, ?, ?, ?, ?, ?)
                 WHERE id = ? """,
                 (
                     top.description_entry.get(),
                     top.frequency_entry.get(),
                     top.period_combobox.get(),
                     top.date_last_entry.get(),
+                    date_next,
                     top.source_entry.get(),
                     self.tree.item(selected_item)["values"][0],
                 ),
