@@ -24,8 +24,9 @@ cur.execute("""
         frequency TEXT,
         period TEXT,
         date_last TEXT,
-        date_next TEXT AS (DATE(date_last, '+' || frequency || ' ' ||
-            period)) STORED,
+        date_next TEXT AS
+            (IIF(period == 'weeks', date_next = DATE(date_last),
+            date_next = DATE(date_last, '+' || ' ' || frequency || ' ' || period))) STORED,
         source TEXT)
 """)
 
@@ -103,7 +104,7 @@ class App(tk.Tk):
             data_get = (
                 top.description_entry.get(),
                 top.frequency_entry.get(),
-                top.period_entry.get(),
+                top.period_combobox.get(),
                 top.date_last_entry.get(),
                 top.source_entry.get(),
             )
@@ -116,14 +117,7 @@ class App(tk.Tk):
             )
             con.commit()
             refresh(self)
-
-            # clear entries in new item screen for another new item
-            top.description_entry.delete(0, tk.END)
-            top.frequency_entry.delete(0, tk.END)
-            top.period_entry.delete(0, tk.END)
-            top.date_last_entry.delete(0, tk.END)
-            top.source_entry.delete(0, tk.END)
-            top.period_entry.set("")
+            top.destroy()
 
         def cancel():
             remove_toplevels(self)
@@ -178,7 +172,13 @@ class App(tk.Tk):
         top.frequency_entry.insert(
             0, self.tree.item(selected_item)["values"][2]
         )
-        top.period_entry.insert(0, self.tree.item(selected_item)["values"][3])
+
+        # use index function to determine index of the period_combobox value
+        indx = top.period_list.index(
+            self.tree.item(selected_item)["values"][3]
+        )
+        # set the combobox value useing current function
+        top.period_combobox.current(indx)
         top.date_last_entry.insert(
             0, self.tree.item(selected_item)["values"][4]
         )
@@ -202,7 +202,7 @@ class App(tk.Tk):
                 (
                     top.description_entry.get(),
                     top.frequency_entry.get(),
-                    top.period_entry.get(),
+                    top.period_combobox.get(),
                     top.date_last_entry.get(),
                     top.source_entry.get(),
                     self.tree.item(selected_item)["values"][0],
