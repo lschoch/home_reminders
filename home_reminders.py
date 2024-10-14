@@ -55,10 +55,10 @@ class App(tk.Tk):
         self.view_current = True
 
         self.lbl_msg = tk.StringVar()
-        self.lbl_msg.set("Pending items - select a row to update or delete")
+        self.lbl_msg.set("Future items - select a row to update or delete")
 
         # create main screen
-        self.btn = ttk.Button(self, text="Pending", command=self.pending).grid(
+        self.btn = ttk.Button(self, text="Future", command=self.future).grid(
             row=1, column=0, padx=20, pady=(20, 0), sticky="n"
         )
         self.btn = ttk.Button(self, text="All", command=self.view_all).grid(
@@ -143,9 +143,9 @@ class App(tk.Tk):
             row=2, column=3, padx=(0, 48), pady=(15, 0), sticky="e"
         )
 
-    def pending(self):
+    def future(self):
         self.view_current = True
-        self.lbl_msg.set("Pending items - select a row to update or delete")
+        self.lbl_msg.set("Future items - select a row to update or delete")
         refresh(self)
 
     def view_all(self):

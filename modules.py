@@ -193,7 +193,7 @@ def refresh(self):
     # connect to database and create cursor
     self.con = sqlite3.connect("home_reminders.db")
     self.cur = self.con.cursor()
-    # select data depending on the current view (all vs pending)
+    # select data depending on the current view (all vs future)
     if self.view_current:
         data = self.cur.execute("""
             SELECT * FROM reminders
