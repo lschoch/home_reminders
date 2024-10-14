@@ -1,11 +1,12 @@
 import sqlite3
 import tkinter as tk
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timedelta  # noqa: F401
 from tkinter import messagebox, ttk  # noqa: F401
 
 from modules import (
     TopLvl,
     create_tree_widget,
+    date_next_calc,
     get_date,
     insert_data,
     refresh,
@@ -24,9 +25,7 @@ cur.execute("""
         frequency TEXT,
         period TEXT,
         date_last TEXT,
-        date_next TEXT AS
-            (IIF(period == 'weeks', date_next = DATE(date_last),
-            date_next = DATE(date_last, '+' || ' ' || frequency || ' ' || period))) STORED,
+        date_next TEXT,
         source TEXT)
 """)
 
@@ -101,23 +100,36 @@ class App(tk.Tk):
 
         # function to save new item to database
         def save_item():
+            # calculate date_next
+            date_last = top.date_last_entry.get()
+            frequency = int(top.frequency_entry.get())
+            period = top.period_combobox.get()
+            date_next = date_next_calc(date_last, frequency, period)
+
             data_get = (
                 top.description_entry.get(),
-                top.frequency_entry.get(),
+                frequency,
                 top.period_combobox.get(),
-                top.date_last_entry.get(),
+                date_last,
+                date_next,
                 top.source_entry.get(),
             )
             cur.execute(
                 """
                 INSERT INTO reminders (
-                    description, frequency, period, date_last, source)
-                VALUES (?, ?, ?, ?, ?)""",
+                    description,
+                    frequency,
+                    period,
+                    date_last,
+                    date_next,
+                    source)
+                VALUES (?, ?, ?, ?, ?, ?)""",
                 data_get,
             )
             con.commit()
             refresh(self)
             top.destroy()
+            self.focus_set()
 
         def cancel():
             remove_toplevels(self)

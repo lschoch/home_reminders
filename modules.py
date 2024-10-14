@@ -1,8 +1,9 @@
 import sqlite3
 import tkinter as tk
-from datetime import date, datetime
+from datetime import date, datetime, timedelta  # noqa: F401
 from tkinter import messagebox, ttk  # noqa: F401
 
+from dateutil.relativedelta import relativedelta
 from tkcalendar import Calendar
 
 
@@ -210,3 +211,31 @@ def refresh(self):
 
     insert_data(self, data)
     self.refreshed = True
+
+
+# function to calculate date_next given period
+def date_next_calc(date_last, frequency, period):
+    match period:
+        case "":
+            date_next = "None"
+        case "days":
+            date_next = datetime.strptime(
+                date_last, "%Y-%m-%d"
+            ).date() + timedelta(days=frequency)
+            date_next = date_next.strftime("%Y-%m-%d")
+        case "weeks":
+            date_next = datetime.strptime(
+                date_last, "%Y-%m-%d"
+            ).date() + timedelta(weeks=frequency)
+            date_next = date_next.strftime("%Y-%m-%d")
+        case "months":
+            date_next = datetime.strptime(
+                date_last, "%Y-%m-%d"
+            ).date() + relativedelta(months=frequency)
+            date_next = date_next.strftime("%Y-%m-%d")
+        case "years":
+            date_next = datetime.strptime(
+                date_last, "%Y-%m-%d"
+            ).date() + relativedelta(years=frequency)
+            date_next = date_next.strftime("%Y-%m-%d")
+    return date_next
