@@ -108,10 +108,12 @@ def get_date(date_last_entry, top):
     top2.configure(background="#cacaca")
     x = top.winfo_x()
     y = top.winfo_y()
-    top2.geometry("+%d+%d" % (x + 48, y + 120))
+    top2.geometry("+%d+%d" % (x + 48, y + 195))  # y + 120
 
-    # keep calendar in front of it's parent window
+    # keep calendar in front of it's parent window (only wm_transient works)
     # top2.wm_transient(top)
+    # top2.wm_attributes("-topmost", True)
+    # top2.lift()
 
     cal = Calendar(
         top2,
@@ -140,7 +142,6 @@ def get_date(date_last_entry, top):
     ttk.Button(top2, text="cancel", width=5, command=cal_cancel).grid(
         row=1, column=0, padx=(0, 80), sticky="e"
     )
-
     # bind CalendarSelected event to function that sets date_last_entry
     cal.bind("<<CalendarSelected>>", on_cal_selection_changed)
 
