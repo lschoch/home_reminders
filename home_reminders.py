@@ -1,5 +1,6 @@
 import sqlite3
 import tkinter as tk
+from datetime import date
 from tkinter import messagebox, ttk
 
 from classes import TopLvl
@@ -90,6 +91,7 @@ class App(tk.Tk):
 
         # create new toplevel
         top = TopLvl(self, "New Item")
+        top.date_last_entry.insert(0, date.today())
 
         # get_date_cmd calls get date (calendar pop-up)
         def get_date_cmd(event):
