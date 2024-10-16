@@ -14,7 +14,7 @@ class TopLvl(tk.Toplevel):
 
         # create list of values for period_combobox that will be be accessed
         # outside the combobox configuration
-        self.period_list = ["", "days", "weeks", "months", "years"]
+        self.period_list = ["days", "weeks", "months", "years"]
 
         # create entry labels and widgets for the top level
         ttk.Label(self, text="description", background="#ececec").grid(
