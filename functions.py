@@ -111,7 +111,7 @@ def get_date(date_last_entry, top):
     top2.geometry("+%d+%d" % (x + 48, y + 120))
 
     # keep calendar in front of it's parent window
-    top2.wm_transient(top)
+    # top2.wm_transient(top)
 
     cal = Calendar(
         top2,
@@ -170,7 +170,7 @@ def refresh(self):
     self.refreshed = True
 
 
-# function to calculate date_next given period
+# function to calculate date_next
 def date_next_calc(date_last, frequency, period):
     match period:
         case "":

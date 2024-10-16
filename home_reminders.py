@@ -155,10 +155,11 @@ class App(tk.Tk):
             con.commit()
             refresh(self)
             top.destroy()
-            self.focus_set()
+            self.tree.focus()
 
         def cancel():
-            remove_toplevels(self)
+            # remove_toplevels(self)
+            top.destroy()
             self.tree.focus()
 
         ttk.Button(top, text="Save", command=save_item).grid(
@@ -203,7 +204,7 @@ class App(tk.Tk):
         # create toplevel
         top = TopLvl(self, "Selection")
 
-        # capture id and description of the selection
+        # capture id and description fields of the selected item
         id = self.tree.item(selected_item)["values"][0]
         original_description = self.tree.item(selected_item)["values"][1]
 
