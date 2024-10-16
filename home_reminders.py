@@ -201,6 +201,10 @@ class App(tk.Tk):
         # create toplevel
         top = TopLvl(self, "Selection")
 
+        # capture id and description of the selection
+        id = self.tree.item(selected_item)["values"][0]
+        original_description = self.tree.item(selected_item)["values"][1]
+
         # populate entries with data from the selection
         top.description_entry.insert(
             0, self.tree.item(selected_item)["values"][1]
@@ -241,6 +245,26 @@ class App(tk.Tk):
                     "Invalid Input", "Please select a period and a date_last."
                 )
                 return
+
+            # check for duplicate description
+            result = cur.execute("""SELECT * FROM reminders""")
+            for item in result.fetchall():
+                if (
+                    # item[1] is the selected description
+                    item[1] == top.description_entry.get()
+                    # duplicate OK if just changing other parameters
+                    # item[0] is the selected id
+                    and not item[0] == id
+                ):
+                    # reset original description
+                    top.description_entry.delete(0, tk.END)
+                    top.description_entry.insert(0, original_description)
+                    messagebox.showinfo(
+                        "Invalid Input",
+                        """There is already an item with that description.\n
+                        Try again.""",
+                    )
+                    return
 
             # calculate date_next
             date_last = top.date_last_entry.get()
