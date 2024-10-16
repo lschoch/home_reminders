@@ -2,9 +2,59 @@ import tkinter as tk
 from tkinter import ttk
 
 
+# create toplevel
+class TopLvl(tk.Toplevel):
+    def __init__(self, master, title):
+        super().__init__(master)
+        self.title(title)
+        self.config(padx=20, pady=20)
+        x = master.winfo_x()
+        y = master.winfo_y()
+        self.geometry("+%d+%d" % (x + 110, y + 335))
+
+        # create list of values for period_combobox that will be be accessed
+        # outside the combobox configuration
+        self.period_list = ["", "days", "weeks", "months", "years"]
+
+        # create entry labels and widgets for the top level
+        ttk.Label(self, text="description", background="#ececec").grid(
+            row=0, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
+        )
+        self.description_entry = ttk.Entry(self)
+        self.description_entry.grid(
+            row=0, column=1, padx=(0, 15), pady=(0, 15)
+        )
+
+        ttk.Label(self, text="frequency", background="#ececec").grid(
+            row=0, column=2, padx=5, pady=(0, 15), sticky="e"
+        )
+        self.frequency_entry = ttk.Entry(self)
+        self.frequency_entry.grid(row=0, column=3, padx=(0, 15), pady=(0, 15))
+
+        ttk.Label(self, text="period", background="#ececec").grid(
+            row=0, column=4, padx=5, pady=(0, 15), sticky="e"
+        )
+        self.period_combobox = AutocompleteCombobox(self)
+        self.period_combobox.set_list(self.period_list)
+        self.period_combobox.grid(row=0, column=5, pady=(0, 15))
+        self.period_combobox.grid(row=0, column=5, pady=(0, 15))
+
+        ttk.Label(self, text="date_last", background="#ececec").grid(
+            row=1, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
+        )
+        self.date_last_entry = ttk.Entry(self)
+        self.date_last_entry.grid(row=1, column=1, padx=(0, 15), pady=(0, 15))
+
+        ttk.Label(self, text="source", background="#ececec").grid(
+            row=1, column=2, padx=(0, 5), pady=(0, 15), sticky="e"
+        )
+        self.source_entry = ttk.Entry(self)
+        self.source_entry.grid(row=1, column=3, padx=(0, 15), pady=(0, 15))
+
+
 class AutocompleteCombobox(ttk.Combobox):
     def set_list(self, completion_list):
-        """Use our completion list as our drop down selection menu, arrows move
+        """Use completion list for the drop down selection menu, arrows move
         through menu."""
         self._completion_list = completion_list
         self._hits = []
@@ -14,7 +64,7 @@ class AutocompleteCombobox(ttk.Combobox):
         self["values"] = self._completion_list  # Setup our popup menu
 
     def autocomplete(self, delta=0):
-        """autocomplete the Combobox, delta may be 0/1/-1 to cycle through
+        """Autocomplete the Combobox, delta may be 0/1/-1 to cycle through
         possible hits"""
         # need to delete selection otherwise we would fix the current position
         if delta:
@@ -43,7 +93,7 @@ class AutocompleteCombobox(ttk.Combobox):
             self.select_clear()
 
     def handle_keyrelease(self, event):
-        """event handler for the keyrelease event on this widget"""
+        """Event handler for the keyrelease event on this widget"""
         if event.keysym == "BackSpace":
             self.delete(self.index(tk.INSERT), tk.END)
             self.position = self.index(tk.END)

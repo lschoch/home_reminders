@@ -2,8 +2,8 @@ import sqlite3
 import tkinter as tk
 from tkinter import messagebox, ttk
 
+from classes import TopLvl
 from modules import (
-    TopLvl,
     create_tree_widget,
     date_next_calc,
     get_date,
