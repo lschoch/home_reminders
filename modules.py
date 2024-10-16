@@ -145,6 +145,12 @@ def get_date(date_last_entry, top):
         top2.wm_overrideredirect(False)
         top2.destroy()
 
+    # function to set date_last_entry from calendar click
+    def on_cal_selection_changed(event):
+        date_last_entry.delete(0, tk.END)
+        date_last_entry.insert(0, cal.selection_get())
+        top2.destroy()
+
     # create a toplevel for the calendar
     top2 = tk.Toplevel(top)
 
@@ -186,6 +192,9 @@ def get_date(date_last_entry, top):
     ttk.Button(top2, text="cancel", width=5, command=cal_cancel).grid(
         row=1, column=0, padx=(0, 80), sticky="e"
     )
+
+    # bind CalendarSelected event to function that sets date_last_entry
+    cal.bind("<<CalendarSelected>>", on_cal_selection_changed)
 
 
 # function to update treeview after change to database
