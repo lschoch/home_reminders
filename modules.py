@@ -6,6 +6,8 @@ from tkinter import ttk
 from dateutil.relativedelta import relativedelta
 from tkcalendar import Calendar
 
+from modules2 import AutocompleteCombobox
+
 
 # create toplevel
 class TopLvl(tk.Toplevel):
@@ -39,11 +41,9 @@ class TopLvl(tk.Toplevel):
         ttk.Label(self, text="period", background="#ececec").grid(
             row=0, column=4, padx=5, pady=(0, 15), sticky="e"
         )
-        self.period_combobox = ttk.Combobox(
-            self,
-            state="readonly",
-            values=self.period_list,
-        )
+        self.period_combobox = AutocompleteCombobox(self)
+        self.period_combobox.set_list(self.period_list)
+        self.period_combobox.grid(row=0, column=5, pady=(0, 15))
         self.period_combobox.grid(row=0, column=5, pady=(0, 15))
 
         ttk.Label(self, text="date_last", background="#ececec").grid(
