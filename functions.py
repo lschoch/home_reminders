@@ -155,12 +155,12 @@ def refresh(self):
         data = self.cur.execute("""
             SELECT * FROM reminders
             WHERE date_next >= DATE('now') OR date_next IS NULL
-            ORDER BY date_next ASC
+            ORDER BY date_next ASC, description ASC
         """)
     else:
         data = self.cur.execute("""
             SELECT * FROM reminders
-            ORDER BY date_next ASC
+            ORDER BY date_next ASC, description ASC
         """)
 
     for item in self.tree.get_children():

@@ -34,7 +34,7 @@ cur.execute("""
 data = cur.execute("""
     SELECT * FROM reminders
     WHERE date_next >= DATE('now')
-    ORDER BY date_next ASC
+    ORDER BY date_next ASC, description ASC
 """)
 
 
@@ -178,7 +178,7 @@ class App(tk.Tk):
         self.lbl_msg.set("All items - select a row to update or delete")
         data = cur.execute("""
             SELECT * FROM reminders
-            ORDER BY date_next ASC
+            ORDER BY date_next ASC, description ASC
         """)
         for item in self.tree.get_children():
             self.tree.delete(item)
