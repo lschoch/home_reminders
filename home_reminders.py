@@ -113,6 +113,17 @@ class App(tk.Tk):
                 )
                 return
 
+            # check for duplicate description
+            result = cur.execute("""SELECT * FROM reminders""")
+            for item in result.fetchall():
+                if item[1] == top.description_entry.get():
+                    messagebox.showinfo(
+                        "Invalid Input",
+                        """There is already an item with that description.\n
+                        Try again.""",
+                    )
+                    return
+
             # calculate date_next
             date_last = top.date_last_entry.get()
             frequency = int(top.frequency_entry.get())
