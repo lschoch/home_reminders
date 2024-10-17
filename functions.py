@@ -113,9 +113,9 @@ def get_date(date_last_entry, top):
     top2.geometry("+%d+%d" % (x + 48, y + 195))  # y + 120
 
     # keep calendar in front of it's parent window (only wm_transient works)
-    # top2.wm_transient(top)
-    # top2.wm_attributes("-topmost", True)
-    # top2.lift()
+    # 1. top2.wm_transient(top)
+    # 2. top2.wm_attributes("-topmost", True)
+    # 3. top2.lift()
 
     cal = Calendar(
         top2,
