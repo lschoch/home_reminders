@@ -97,6 +97,8 @@ def get_date(date_last_entry, top):
     def on_cal_selection_changed(event):
         date_last_entry.delete(0, tk.END)
         date_last_entry.insert(0, cal.selection_get())
+        # restore overrideredirect to False
+        top2.wm_overrideredirect(False)
         top2.destroy()
 
     # create a toplevel for the calendar
