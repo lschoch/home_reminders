@@ -184,9 +184,9 @@ class App(tk.Tk):
         for item in self.tree.get_children():
             self.tree.delete(item)
         insert_data(self, data)
-        self.focus()
         self.refreshed = True
         self.view_current = False
+        self.tree.focus_set()
 
     def quit_program(self):
         self.destroy()
