@@ -62,9 +62,9 @@ class App(tk.Tk):
         self.btn = ttk.Button(self, text="Future", command=self.future).grid(
             row=1, column=0, padx=20, pady=(20, 0), sticky="n"
         )
-        self.btn = ttk.Button(self, text="All", command=self.view_all).grid(
-            row=1, column=0, padx=20, pady=(72, 0), sticky="n"
-        )
+        self.btn = ttk.Button(
+            self, text="Expired", command=self.view_all
+        ).grid(row=1, column=0, padx=20, pady=(72, 0), sticky="n")
         self.btn = ttk.Button(self, text="New", command=self.create_new).grid(
             row=1, column=0, padx=20, pady=(0, 72), sticky="s"
         )
@@ -83,6 +83,22 @@ class App(tk.Tk):
 
         # add data to treeview
         insert_data(self, data)
+
+        # query database for expired reminders
+        expired = cur.execute("""
+            SELECT * FROM reminders
+            WHERE date_next < DATE('now')
+            ORDER BY date_next ASC, description ASC
+        """).fetchall()
+
+        self.tree.focus_set()
+
+        # message user if there are expired reminders
+        if expired:
+            """ messagebox.showinfo(
+                "", f"There are {len(expired)} expired reminders."
+            ) """
+            self.lbl_msg.set(f"There are {len(expired)} expired reminders.")
 
     # create top level window for entry of data for new item
     def create_new(self):
