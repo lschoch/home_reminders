@@ -211,3 +211,15 @@ def valid_frequency(input_data):
             return False
     else:
         return False
+
+
+def check_expired(self):
+    # connect to database and create cursor
+    self.con = sqlite3.connect("home_reminders.db")
+    self.cur = self.con.cursor()
+    result = self.cur.execute("""
+        SELECT * FROM reminders
+        WHERE date_next < DATE('now')
+        ORDER BY date_next ASC
+    """).fetchall()
+    return result

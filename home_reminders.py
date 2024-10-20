@@ -5,6 +5,7 @@ from tkinter import messagebox, ttk
 
 from classes import TopLvl
 from functions import (
+    check_expired,
     create_tree_widget,
     date_next_calc,
     get_date,
@@ -56,7 +57,9 @@ class App(tk.Tk):
         self.view_current = True
 
         self.lbl_msg = tk.StringVar()
+        self.lbl_color = tk.StringVar()
         self.lbl_msg.set("Future items - select a row to update or delete")
+        self.lbl_color.set("#edecec")
 
         # create main screen
         self.btn = ttk.Button(self, text="Future", command=self.future).grid(
@@ -74,9 +77,17 @@ class App(tk.Tk):
         self.view_lbl = ttk.Label(
             self,
             textvariable=self.lbl_msg,
-            background="#ececec",
+            background=self.lbl_color.get(),
             font=("Arial", 18),
-        ).grid(row=0, column=1, padx=(5, 0), pady=(20, 4), sticky="w")
+            anchor="center",
+        )
+        self.view_lbl.grid(
+            row=0,
+            column=1,
+            # padx=(5, 0),
+            pady=(20, 4),
+            sticky="ew",
+        )
 
         # create treeview to display data
         self.tree = create_tree_widget(self)
@@ -84,21 +95,17 @@ class App(tk.Tk):
         # add data to treeview
         insert_data(self, data)
 
-        # query database for expired reminders
-        expired = cur.execute("""
-            SELECT * FROM reminders
-            WHERE date_next < DATE('now')
-            ORDER BY date_next ASC, description ASC
-        """).fetchall()
+        # message user if there are expired reminders
+        result = check_expired(self)
+        if result:
+            self.lbl_msg.set(f"There are {len(result)} expired reminders.")
+            self.lbl_color.set("yellow")
+        else:
+            self.lbl_msg.set("Future items - select a row to update or delete")
+            self.lbl_color.set("#ececec")
+        self.view_lbl.config(background=self.lbl_color.get())
 
         self.tree.focus_set()
-
-        # message user if there are expired reminders
-        if expired:
-            """ messagebox.showinfo(
-                "", f"There are {len(expired)} expired reminders."
-            ) """
-            self.lbl_msg.set(f"There are {len(expired)} expired reminders.")
 
     # create top level window for entry of data for new item
     def create_new(self):
@@ -188,11 +195,23 @@ class App(tk.Tk):
 
     def future(self):
         self.view_current = True
-        self.lbl_msg.set("Future items - select a row to update or delete")
+        # message user if there are expired reminders
+        result = check_expired(self)
+        if result:
+            self.lbl_msg.set(f"There are {len(result)} expired reminders.")
+            self.lbl_color.set("yellow")
+        else:
+            self.lbl_msg.set("Future items - select a row to update or delete")
+            self.lbl_color.set("#ececec")
+        self.view_lbl.config(background=self.lbl_color.get())
         refresh(self)
+
+        self.tree.focus_set()
 
     def view_all(self):
         self.lbl_msg.set("All items - select a row to update or delete")
+        self.lbl_color.set("#ececec")
+        self.view_lbl.config(background=self.lbl_color.get())
         data = cur.execute("""
             SELECT * FROM reminders
             ORDER BY date_next ASC, description ASC
