@@ -58,16 +58,16 @@ class App(tk.Tk):
 
         self.lbl_msg = tk.StringVar()
         self.lbl_color = tk.StringVar()
-        self.lbl_msg.set("Future items - select a row to update or delete")
+        self.lbl_msg.set("Pending items - select a row to update or delete")
         self.lbl_color.set("#edecec")
 
         # create main screen
-        self.btn = ttk.Button(self, text="Future", command=self.future).grid(
+        self.btn = ttk.Button(self, text="Pending", command=self.pending).grid(
             row=1, column=0, padx=20, pady=(20, 0), sticky="n"
         )
-        self.btn = ttk.Button(
-            self, text="Expired", command=self.view_all
-        ).grid(row=1, column=0, padx=20, pady=(72, 0), sticky="n")
+        self.btn = ttk.Button(self, text="All", command=self.view_all).grid(
+            row=1, column=0, padx=20, pady=(72, 0), sticky="n"
+        )
         self.btn = ttk.Button(self, text="New", command=self.create_new).grid(
             row=1, column=0, padx=20, pady=(0, 72), sticky="s"
         )
@@ -101,10 +101,12 @@ class App(tk.Tk):
             self.lbl_msg.set(f"There are {len(result)} expired reminders.")
             self.lbl_color.set("yellow")
         else:
-            self.lbl_msg.set("Future items - select a row to update or delete")
+            self.lbl_msg.set(
+                "Pending items - select a row to update or delete"
+            )
             self.lbl_color.set("#ececec")
         self.view_lbl.config(background=self.lbl_color.get())
-
+        self.focus_set()
         self.tree.focus_set()
 
     # create top level window for entry of data for new item
@@ -193,7 +195,7 @@ class App(tk.Tk):
             row=2, column=3, padx=(0, 48), pady=(15, 0), sticky="e"
         )
 
-    def future(self):
+    def pending(self):
         self.view_current = True
         # message user if there are expired reminders
         result = check_expired(self)
@@ -201,11 +203,14 @@ class App(tk.Tk):
             self.lbl_msg.set(f"There are {len(result)} expired reminders.")
             self.lbl_color.set("yellow")
         else:
-            self.lbl_msg.set("Future items - select a row to update or delete")
+            self.lbl_msg.set(
+                "Pending items - select a row to update or delete"
+            )
             self.lbl_color.set("#ececec")
         self.view_lbl.config(background=self.lbl_color.get())
         refresh(self)
-
+        remove_toplevels(self)
+        self.focus_set()
         self.tree.focus_set()
 
     def view_all(self):
@@ -219,8 +224,10 @@ class App(tk.Tk):
         for item in self.tree.get_children():
             self.tree.delete(item)
         insert_data(self, data)
+        remove_toplevels(self)
         self.refreshed = True
         self.view_current = False
+        self.focus_set()
         self.tree.focus_set()
 
     def quit_program(self):
