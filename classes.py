@@ -89,8 +89,8 @@ class AutocompleteCombobox(ttk.Combobox):
         if self._hits:
             self.delete(0, tk.END)
             self.insert(0, self._hits[self._hit_index])
-            self.select_range(self.position, tk.END)
-            self.select_clear()
+            # self.select_range(self.position, tk.END)
+            # self.select_clear()
             self.config(state="readonly")
 
     def handle_keyrelease(self, event):

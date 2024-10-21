@@ -58,8 +58,6 @@ class App(tk.Tk):
 
         self.lbl_msg = tk.StringVar()
         self.lbl_color = tk.StringVar()
-        self.lbl_msg.set("Pending items - select a row to update or delete")
-        self.lbl_color.set("#edecec")
 
         # create main screen
         self.btn = ttk.Button(self, text="Pending", command=self.pending).grid(
@@ -95,7 +93,7 @@ class App(tk.Tk):
         # add data to treeview
         insert_data(self, data)
 
-        # view label message and color
+        # set view_label message and color
         check_expired(self)
 
         self.focus_set()
@@ -193,34 +191,25 @@ class App(tk.Tk):
 
     def pending(self):
         self.view_current = True
-        # set view_label message and color
-        result = check_expired(self)
-        if result:
-            if len(result) == 1:
-                msg = "Pending (1 expired)"
-            else:
-                msg = f"Pending ({len(result)} expired)"
-            self.lbl_msg.set(msg)
-            self.lbl_color.set("yellow")
-        else:
-            self.lbl_msg.set(
-                "Pending items - select a row to update or delete"
-            )
-            self.lbl_color.set("#ececec")
-        self.view_lbl.config(background=self.lbl_color.get())
-        refresh(self)
+        data = cur.execute("""
+            SELECT * FROM reminders
+            WHERE date_next >= DATE('now')
+            ORDER BY date_next ASC, description ASC
+        """)
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+        insert_data(self, data)
 
         # set view_label message and color
         check_expired(self)
 
         remove_toplevels(self)
+        self.refreshed = True
         self.focus_set()
         self.tree.focus_set()
 
     def view_all(self):
-        self.lbl_msg.set("All items - select a row to update or delete")
-        self.lbl_color.set("#ececec")
-        self.view_lbl.config(background=self.lbl_color.get())
+        self.view_current = False
         data = cur.execute("""
             SELECT * FROM reminders
             ORDER BY date_next ASC, description ASC
@@ -228,9 +217,12 @@ class App(tk.Tk):
         for item in self.tree.get_children():
             self.tree.delete(item)
         insert_data(self, data)
+
+        # set view_label message and color
+        check_expired(self)
+
         remove_toplevels(self)
         self.refreshed = True
-        self.view_current = False
         self.focus_set()
         self.tree.focus_set()
 
