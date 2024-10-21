@@ -91,6 +91,7 @@ class AutocompleteCombobox(ttk.Combobox):
             self.insert(0, self._hits[self._hit_index])
             self.select_range(self.position, tk.END)
             self.select_clear()
+            self.config(state="readonly")
 
     def handle_keyrelease(self, event):
         """Event handler for the keyrelease event on this widget"""
