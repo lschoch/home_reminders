@@ -354,6 +354,8 @@ class App(tk.Tk):
             check_expired(self)
 
             remove_toplevels(self)
+            self.focus()
+            self.tree.focus_set()
 
         def cancel():
             remove_toplevels(self)
