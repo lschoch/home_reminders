@@ -223,10 +223,10 @@ def check_expired(self):
         ORDER BY date_next ASC
     """).fetchall()
     if result and self.view_current:
-        if len(result) == 1:
-            msg = "Pending (1 expired)"
-        else:
-            msg = f"Pending ({len(result)} expired)"
+        msg = (
+            "Pending items - select a row to update or delete "
+            f"({len(result)} expired)"
+        )
         self.lbl_msg.set(msg)
         self.lbl_color.set("yellow")
     elif self.view_current:
