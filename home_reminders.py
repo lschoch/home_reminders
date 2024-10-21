@@ -95,17 +95,9 @@ class App(tk.Tk):
         # add data to treeview
         insert_data(self, data)
 
-        # message user if there are expired reminders
-        result = check_expired(self)
-        if result:
-            self.lbl_msg.set(f"There are {len(result)} expired reminders.")
-            self.lbl_color.set("yellow")
-        else:
-            self.lbl_msg.set(
-                "Pending items - select a row to update or delete"
-            )
-            self.lbl_color.set("#ececec")
-        self.view_lbl.config(background=self.lbl_color.get())
+        # view label message and color
+        check_expired(self)
+
         self.focus_set()
         self.tree.focus_set()
 
@@ -179,6 +171,10 @@ class App(tk.Tk):
             )
             con.commit()
             refresh(self)
+
+            # set view_label message and color
+            check_expired(self)
+
             top.destroy()
             self.tree.focus()
 
@@ -197,10 +193,14 @@ class App(tk.Tk):
 
     def pending(self):
         self.view_current = True
-        # message user if there are expired reminders
+        # set view_label message and color
         result = check_expired(self)
         if result:
-            self.lbl_msg.set(f"There are {len(result)} expired reminders.")
+            if len(result) == 1:
+                msg = "Pending (1 expired)"
+            else:
+                msg = f"Pending ({len(result)} expired)"
+            self.lbl_msg.set(msg)
             self.lbl_color.set("yellow")
         else:
             self.lbl_msg.set(
@@ -209,6 +209,10 @@ class App(tk.Tk):
             self.lbl_color.set("#ececec")
         self.view_lbl.config(background=self.lbl_color.get())
         refresh(self)
+
+        # set view_label message and color
+        check_expired(self)
+
         remove_toplevels(self)
         self.focus_set()
         self.tree.focus_set()
@@ -335,6 +339,10 @@ class App(tk.Tk):
                 ),
             )
             con.commit()
+
+            # set view_label message and color
+            check_expired(self)
+
             remove_toplevels(self)
             refresh(self)
 
@@ -349,6 +357,10 @@ class App(tk.Tk):
             )
             con.commit()
             refresh(self)
+
+            # set view_label message and color
+            check_expired(self)
+
             remove_toplevels(self)
 
         def cancel():
