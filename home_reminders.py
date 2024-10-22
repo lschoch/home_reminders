@@ -45,7 +45,7 @@ class App(tk.Tk):
         super().__init__(**kw)
 
         self.title("Home Reminders")
-        self.geometry("1110x300")
+        self.geometry("1120x300")
         self.style = ttk.Style()
         self.style.theme_use("clam")
 
@@ -99,18 +99,22 @@ class App(tk.Tk):
             pady=(20, 4),
             sticky="e",
         )
-        ####################################
-        self.legend_frame = tk.Frame(self)
-        self.legend_frame.grid(row=1, column=3, sticky="nsew")
 
-        ttk.Label(
+        ####################################
+        # create legend
+        self.legend_frame = tk.Frame(
+            self, highlightbackground="black", highlightthickness=1
+        )
+        self.legend_frame.grid(row=1, column=3, padx=(14, 0), ipadx=5, ipady=5)
+
+        tk.Label(
             self.legend_frame,
             text="Legend:",
             justify="center",
             font=("Arial", 14),
             foreground="red",
             background="#ececec",
-        ).grid(row=0, column=0, padx=(5, 0), columnspan=2)
+        ).grid(row=0, column=0, pady=(5, 0), columnspan=2)
 
         ttk.Label(
             self.legend_frame, text="  ", width=2, background="cyan"
@@ -121,7 +125,7 @@ class App(tk.Tk):
         )
         ttk.Label(
             self.legend_frame, text="due today - ", background="#ececec"
-        ).grid(row=1, column=0, padx=(15, 0), pady=(5, 0), sticky="e")
+        ).grid(row=1, column=0, padx=(5, 0), pady=(5, 0), sticky="e")
 
         ttk.Label(
             self.legend_frame, text="  ", width=2, background="yellow"
@@ -132,7 +136,8 @@ class App(tk.Tk):
         )
         ttk.Label(
             self.legend_frame, text="past due - ", background="#ececec"
-        ).grid(row=2, column=0, padx=(15, 0), pady=(5, 0), sticky="e")
+        ).grid(row=2, column=0, padx=(5, 0), pady=(5, 0), sticky="e")
+        # end legend
         ####################################
 
         # create treeview to display data
