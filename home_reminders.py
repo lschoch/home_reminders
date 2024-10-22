@@ -60,6 +60,34 @@ class App(tk.Tk):
         self.lbl_color = tk.StringVar()
 
         # create main screen
+        self.legend_frame = tk.Frame(self)
+        self.legend_frame.grid(row=0, column=0, sticky="nsew")
+        # self.legend_frame.columnconfigure(1, weight=3)
+
+        ttk.Label(
+            self.legend_frame, text="Legend:", background="#ececec"
+        ).grid(row=0, column=0, sticky="w")
+
+        ttk.Label(self.legend_frame, text="    ", background="cyan").grid(
+            row=1,
+            column=0,
+            padx=(10, 2),
+            pady=(5, 0),
+        )
+        ttk.Label(
+            self.legend_frame, text="- due today", background="#ececec"
+        ).grid(row=1, column=1, padx=0, pady=(5, 0), sticky="nsew")
+
+        ttk.Label(self.legend_frame, text="    ", background="yellow").grid(
+            row=2,
+            column=0,
+            padx=(10, 2),
+            pady=(5, 0),
+        )
+        ttk.Label(
+            self.legend_frame, text="- expired", background="#ececec"
+        ).grid(row=2, column=1, padx=0, pady=(5, 0), sticky="nsew")
+
         self.btn = ttk.Button(self, text="Pending", command=self.pending).grid(
             row=1, column=0, padx=20, pady=(20, 0), sticky="n"
         )
