@@ -45,7 +45,7 @@ class App(tk.Tk):
         super().__init__(**kw)
 
         self.title("Home Reminders")
-        self.geometry("1000x300")
+        self.geometry("1110x300")
         self.style = ttk.Style()
         self.style.theme_use("clam")
 
@@ -58,36 +58,9 @@ class App(tk.Tk):
 
         self.lbl_msg = tk.StringVar()
         self.lbl_color = tk.StringVar()
+        self.expired_msg = tk.StringVar()
 
         # create main screen
-        self.legend_frame = tk.Frame(self)
-        self.legend_frame.grid(row=0, column=0, sticky="nsew")
-        # self.legend_frame.columnconfigure(1, weight=3)
-
-        ttk.Label(
-            self.legend_frame, text="Legend:", background="#ececec"
-        ).grid(row=0, column=0, sticky="w")
-
-        ttk.Label(self.legend_frame, text="    ", background="cyan").grid(
-            row=1,
-            column=0,
-            padx=(10, 2),
-            pady=(5, 0),
-        )
-        ttk.Label(
-            self.legend_frame, text="- due today", background="#ececec"
-        ).grid(row=1, column=1, padx=0, pady=(5, 0), sticky="nsew")
-
-        ttk.Label(self.legend_frame, text="    ", background="yellow").grid(
-            row=2,
-            column=0,
-            padx=(10, 2),
-            pady=(5, 0),
-        )
-        ttk.Label(
-            self.legend_frame, text="- expired", background="#ececec"
-        ).grid(row=2, column=1, padx=0, pady=(5, 0), sticky="nsew")
-
         self.btn = ttk.Button(self, text="Pending", command=self.pending).grid(
             row=1, column=0, padx=20, pady=(20, 0), sticky="n"
         )
@@ -105,15 +78,62 @@ class App(tk.Tk):
             textvariable=self.lbl_msg,
             background=self.lbl_color.get(),
             font=("Arial", 18),
-            anchor="center",
         )
         self.view_lbl.grid(
             row=0,
             column=1,
-            # padx=(5, 0),
+            padx=(3, 0),
             pady=(20, 4),
-            sticky="ew",
+            sticky="w",
         )
+        self.expired_lbl = ttk.Label(
+            self,
+            textvariable=self.expired_msg,
+            font=("Arial", 18),
+            background="yellow",
+        )
+        self.expired_lbl.grid(
+            row=0,
+            column=1,
+            padx=(0, 0),
+            pady=(20, 4),
+            sticky="e",
+        )
+        ####################################
+        self.legend_frame = tk.Frame(self)
+        self.legend_frame.grid(row=1, column=3, sticky="nsew")
+
+        ttk.Label(
+            self.legend_frame,
+            text="Legend:",
+            justify="center",
+            font=("Arial", 14),
+            foreground="red",
+            background="#ececec",
+        ).grid(row=0, column=0, padx=(5, 0), columnspan=2)
+
+        ttk.Label(
+            self.legend_frame, text="  ", width=2, background="cyan"
+        ).grid(
+            row=1,
+            column=1,
+            pady=(5, 0),
+        )
+        ttk.Label(
+            self.legend_frame, text="due today - ", background="#ececec"
+        ).grid(row=1, column=0, padx=(15, 0), pady=(5, 0), sticky="e")
+
+        ttk.Label(
+            self.legend_frame, text="  ", width=2, background="yellow"
+        ).grid(
+            row=2,
+            column=1,
+            pady=(5, 0),
+        )
+        ttk.Label(
+            self.legend_frame, text="past due - ", background="#ececec"
+        ).grid(row=2, column=0, padx=(15, 0), pady=(5, 0), sticky="e")
+        ####################################
 
         # create treeview to display data
         self.tree = create_tree_widget(self)

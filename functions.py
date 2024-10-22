@@ -61,7 +61,7 @@ def insert_data(self, data):
     for item in data:
         self.tree.insert("", tk.END, values=item, tags=item[0])
         if item[5] is None:
-            self.tree.tag_configure(item[0], background="yellow")
+            self.tree.tag_configure(item[0], background="#ececec")
         else:
             dat_nxt = datetime.strptime(item[5], "%Y-%m-%d").date()
             if dat_nxt < date.today():
@@ -223,16 +223,16 @@ def check_expired(self):
         ORDER BY date_next ASC
     """).fetchall()
     if result and self.view_current:
-        msg = (
-            "Pending items - select a row to update or delete "
-            f"({len(result)} expired)"
-        )
+        msg = "Pending items - select a row to update or delete "
         self.lbl_msg.set(msg)
-        self.lbl_color.set("yellow")
+        self.lbl_color.set("#ececec")
+        self.expired_msg.set(f"({len(result)} past due - check all)")
     elif self.view_current:
         self.lbl_msg.set("Pending items - select a row to update or delete")
         self.lbl_color.set("#ececec")
+        self.expired_msg.set(f"({len(result)} past due - check all)")
     else:
         self.lbl_msg.set("All items - select a row to update or delete")
         self.lbl_color.set("#ececec")
+        self.expired_msg.set(f"({len(result)} past due)")
     self.view_lbl.config(background=self.lbl_color.get())
