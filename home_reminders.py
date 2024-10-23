@@ -97,7 +97,7 @@ class App(tk.Tk):
         self.expired_lbl.grid(
             row=0,
             column=1,
-            pady=(20, 4),
+            pady=(12, 12),
             ipadx=4,
             ipady=4,
             sticky="e",
