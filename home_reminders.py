@@ -86,17 +86,20 @@ class App(tk.Tk):
             pady=(20, 4),
             sticky="w",
         )
-        self.expired_lbl = ttk.Label(
+        self.expired_lbl = tk.Label(
             self,
             textvariable=self.expired_msg,
             font=("Arial", 18),
             background="yellow",
+            borderwidth=1,
+            relief="solid",
         )
         self.expired_lbl.grid(
             row=0,
             column=1,
-            padx=(0, 0),
             pady=(20, 4),
+            ipadx=4,
+            ipady=4,
             sticky="e",
         )
 
