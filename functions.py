@@ -157,7 +157,7 @@ def refresh(self):
     if self.view_current:
         data = self.cur.execute("""
             SELECT * FROM reminders
-            WHERE date_next >= DATE('now') OR date_next IS NULL
+            WHERE date_next >= DATE('now', 'localtime') OR date_next IS NULL
             ORDER BY date_next ASC, description ASC
         """)
     else:
@@ -219,7 +219,7 @@ def check_expired(self):
     self.cur = self.con.cursor()
     result = self.cur.execute("""
         SELECT * FROM reminders
-        WHERE date_next < DATE('now')
+        WHERE date_next < DATE('now', 'localtime')
         ORDER BY date_next ASC
     """).fetchall()
     if result and self.view_current:

@@ -34,7 +34,7 @@ cur.execute("""
 # select data for display, bring NULLs forward so they don't get lost
 data = cur.execute("""
     SELECT * FROM reminders
-    WHERE date_next >= DATE('now')
+    WHERE date_next >= DATE('now', 'localtime')
     ORDER BY date_next ASC, description ASC
 """)
 
@@ -246,7 +246,7 @@ class App(tk.Tk):
         self.view_current = True
         data = cur.execute("""
             SELECT * FROM reminders
-            WHERE date_next >= DATE('now')
+            WHERE date_next >= DATE('now', 'localtime')
             ORDER BY date_next ASC, description ASC
         """)
         for item in self.tree.get_children():
