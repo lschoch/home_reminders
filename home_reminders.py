@@ -99,7 +99,9 @@ class App(tk.Tk):
             pady=(20, 4),
             sticky="e",
         )
+
         ####################################
+        # create legend
         self.legend_frame = tk.Frame(
             self, highlightbackground="black", highlightthickness=1
         )
@@ -135,6 +137,7 @@ class App(tk.Tk):
         ttk.Label(
             self.legend_frame, text="past due - ", background="#ececec"
         ).grid(row=2, column=0, padx=(5, 0), pady=(5, 0), sticky="e")
+        # end legend
         ####################################
 
         # create treeview to display data
