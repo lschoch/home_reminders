@@ -119,8 +119,13 @@ class App(tk.Tk):
             background="#ececec",
         ).grid(row=0, column=0, pady=(5, 0), columnspan=2)
 
-        ttk.Label(
-            self.legend_frame, text="  ", width=2, background="lightblue"
+        tk.Label(
+            self.legend_frame,
+            text="  ",
+            width=2,
+            background="lightblue",
+            borderwidth=1,
+            relief="solid",
         ).grid(
             row=1,
             column=1,
@@ -130,8 +135,13 @@ class App(tk.Tk):
             self.legend_frame, text="due today - ", background="#ececec"
         ).grid(row=1, column=0, padx=(5, 0), pady=(5, 0), sticky="e")
 
-        ttk.Label(
-            self.legend_frame, text="  ", width=2, background="yellow"
+        tk.Label(
+            self.legend_frame,
+            text="  ",
+            width=2,
+            background="yellow",
+            borderwidth=1,
+            relief="solid",
         ).grid(
             row=2,
             column=1,
