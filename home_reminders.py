@@ -114,8 +114,8 @@ class App(tk.Tk):
             self.legend_frame,
             text="Legend:",
             justify="center",
-            font=("Arial", 14),
-            foreground="red",
+            font=("Arial bold", 14),
+            foreground="black",
             background="#ececec",
         ).grid(row=0, column=0, pady=(5, 0), columnspan=2)
 
