@@ -67,7 +67,7 @@ def insert_data(self, data):
             if dat_nxt < date.today():
                 self.tree.tag_configure(item[0], background="yellow")
             elif dat_nxt == date.today():
-                self.tree.tag_configure(item[0], background="cyan")
+                self.tree.tag_configure(item[0], background="lightblue")
             else:
                 self.tree.tag_configure(item[0], background="white")
 

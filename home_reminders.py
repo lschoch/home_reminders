@@ -120,7 +120,7 @@ class App(tk.Tk):
         ).grid(row=0, column=0, pady=(5, 0), columnspan=2)
 
         ttk.Label(
-            self.legend_frame, text="  ", width=2, background="cyan"
+            self.legend_frame, text="  ", width=2, background="lightblue"
         ).grid(
             row=1,
             column=1,
