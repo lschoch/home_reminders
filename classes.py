@@ -10,7 +10,7 @@ class TopLvl(tk.Toplevel):
         self.config(padx=20, pady=20)
         x = master.winfo_x()
         y = master.winfo_y()
-        self.geometry("+%d+%d" % (x + 110, y + 335))
+        self.geometry("+%d+%d" % (x + 110, y + 395))
 
         # create list of values for period_combobox that will be be accessed
         # outside the combobox configuration

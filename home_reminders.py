@@ -45,9 +45,10 @@ class App(tk.Tk):
         super().__init__(**kw)
 
         self.title("Home Reminders")
-        self.geometry("1120x300")
+        self.geometry("1120x360")
         self.style = ttk.Style()
         self.style.theme_use("clam")
+        self.rowconfigure(0, minsize=100)
 
         # create variable to prevent calling
         # treeview_on_selection_changed after refresh
@@ -83,7 +84,7 @@ class App(tk.Tk):
             row=0,
             column=1,
             padx=(3, 0),
-            pady=(20, 4),
+            pady=(75, 0),
             sticky="w",
         )
         self.expired_lbl = tk.Label(
@@ -97,13 +98,45 @@ class App(tk.Tk):
         self.expired_lbl.grid(
             row=0,
             column=1,
-            pady=(12, 12),
+            pady=(70, 5),
             ipadx=4,
             ipady=4,
             sticky="e",
         )
 
         ####################################
+        # display current datee
+        date_variable = tk.StringVar()
+        date_variable.set(f"Today is {date.today()}")
+
+        self.today_is_frame = tk.Frame(
+            self,
+            # highlightbackground="black",
+            # highlightthickness=1,
+            # background="white",
+        )
+        self.today_is_frame.grid(
+            row=0,
+            column=0,
+            columnspan=2,
+            padx=(20, 0),
+            pady=(20, 0),
+            sticky="nw",
+        )
+
+        self.today_is_lbl = tk.Label(
+            self.today_is_frame,
+            textvariable=date_variable,
+            font=("Arial", 18),
+            # background="white",
+        )
+        self.today_is_lbl.grid(
+            row=0,
+            column=0,
+            padx=2,
+            pady=2,
+        )
+
         # create legend
         self.legend_frame = tk.Frame(
             self, highlightbackground="black", highlightthickness=1
