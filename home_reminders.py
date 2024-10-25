@@ -150,6 +150,22 @@ class App(tk.Tk):
         ttk.Label(
             self.legend_frame, text="past due - ", background="#ececec"
         ).grid(row=2, column=0, padx=(5, 0), pady=(5, 0), sticky="e")
+
+        tk.Label(
+            self.legend_frame,
+            text="  ",
+            width=2,
+            background="white",
+            borderwidth=1,
+            relief="solid",
+        ).grid(
+            row=3,
+            column=1,
+            pady=(5, 0),
+        )
+        ttk.Label(
+            self.legend_frame, text="coming up - ", background="#ececec"
+        ).grid(row=3, column=0, padx=(5, 0), pady=(5, 0), sticky="e")
         # end legend
         ####################################
 
