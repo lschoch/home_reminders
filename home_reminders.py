@@ -111,9 +111,6 @@ class App(tk.Tk):
 
         self.today_is_frame = tk.Frame(
             self,
-            # highlightbackground="black",
-            # highlightthickness=1,
-            # background="white",
         )
         self.today_is_frame.grid(
             row=0,
@@ -127,8 +124,7 @@ class App(tk.Tk):
         self.today_is_lbl = tk.Label(
             self.today_is_frame,
             textvariable=date_variable,
-            font=("Arial", 18),
-            # background="white",
+            font=("Arial", 24),
         )
         self.today_is_lbl.grid(
             row=0,
