@@ -351,7 +351,7 @@ class App(tk.Tk):
         remove_toplevels(self)
 
         # create toplevel
-        top = TopLvl(self, "Selection")
+        top = TopLvl(self, "Edit Selection")
 
         # capture id and description fields of the selected item
         id = self.tree.item(selected_item)["values"][0]
