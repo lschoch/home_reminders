@@ -35,7 +35,6 @@ def create_tree_widget(self):
     tree.column("date_last", width=100, anchor="center")
     tree.column("date_next", width=100, anchor="center")
     tree.column("source", width=200, anchor="w")
-    tree.focus()
 
     tree.bind("<<TreeviewSelect>>", self.on_treeview_selection_changed)
     tree.grid(row=1, column=1)
@@ -56,7 +55,7 @@ def remove_toplevels(self):
 
 
 # function to insert data from database into the treeview,
-# use id as tag to color rows, item[5] is date_last
+# use id as tag to color rows, item[5] is date_next
 def insert_data(self, data):
     for item in data:
         self.tree.insert("", tk.END, values=item, tags=item[0])
@@ -70,6 +69,7 @@ def insert_data(self, data):
                 self.tree.tag_configure(item[0], background="lightblue")
             else:
                 self.tree.tag_configure(item[0], background="white")
+        self.tree.tag_configure(item[0], font=("Helvetica", 13))
 
 
 # function to select date from a calendar
