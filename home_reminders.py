@@ -3,6 +3,8 @@ import tkinter as tk
 from datetime import date
 from tkinter import messagebox, ttk
 
+from PIL import Image, ImageTk
+
 from classes import TopLvl
 from functions import (
     check_expired,
@@ -98,13 +100,14 @@ class App(tk.Tk):
         self.expired_lbl.grid(
             row=0,
             column=1,
+            columnspan=2,
+            padx=(0, 40),
             pady=(70, 5),
             ipadx=4,
             ipady=4,
             sticky="e",
         )
 
-        ####################################
         # display current datee
         date_variable = tk.StringVar()
         date_variable.set(f"Today is {date.today()}")
@@ -133,6 +136,15 @@ class App(tk.Tk):
             pady=2,
         )
 
+        # insert image
+        img = ImageTk.PhotoImage(Image.open("icons8-home-100.png"))
+        # self.tkf = tk.Frame(self)
+        # self.tkf.grid(row=0, column=3)
+        self.img_lbl = tk.Label(self, image=img)
+        self.img_lbl.image = img
+        self.img_lbl.grid(row=0, column=3, padx=(15, 0), pady=(13, 0))
+
+        ####################################
         # create legend
         self.legend_frame = tk.Frame(
             self, highlightbackground="black", highlightthickness=1
