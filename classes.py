@@ -48,8 +48,15 @@ class TopLvl(tk.Toplevel):
         ttk.Label(self, text="source", background="#ececec").grid(
             row=1, column=2, padx=(0, 5), pady=(0, 15), sticky="e"
         )
-        self.source_entry = ttk.Entry(self)
-        self.source_entry.grid(row=1, column=3, padx=(0, 15), pady=(0, 15))
+        self.source_entry = ttk.Entry(self, width=48)
+        self.source_entry.grid(
+            row=1,
+            column=3,
+            columnspan=3,
+            padx=(0, 15),
+            pady=(0, 15),
+            sticky="w",
+        )
 
 
 class AutocompleteCombobox(ttk.Combobox):
