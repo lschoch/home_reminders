@@ -230,7 +230,7 @@ def check_expired(self):
     elif self.view_current:
         self.lbl_msg.set("Pending items - select a row to update or delete")
         self.lbl_color.set("#ececec")
-        self.expired_msg.set(f'{len(result)} past due (click "All")')
+        self.expired_msg.set(f"{len(result)} past due")
     else:
         self.lbl_msg.set("All items - select a row to update or delete")
         self.lbl_color.set("#ececec")
