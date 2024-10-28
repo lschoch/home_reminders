@@ -85,14 +85,12 @@ class App(tk.Tk):
         self.view_lbl.grid(
             row=0,
             column=1,
-            padx=(3, 0),
-            pady=(75, 0),
-            sticky="w",
+            # padx=(3, 0),
+            pady=(15, 0),
         )
         self.expired_lbl = tk.Label(
             self,
             textvariable=self.expired_msg,
-            font=("Arial", 18),
             background="yellow",
             borderwidth=1,
             relief="solid",
@@ -100,12 +98,9 @@ class App(tk.Tk):
         self.expired_lbl.grid(
             row=0,
             column=1,
-            columnspan=2,
-            padx=(0, 40),
-            pady=(70, 5),
+            pady=(73, 6),
             ipadx=4,
             ipady=4,
-            sticky="e",
         )
 
         # display current datee
@@ -120,13 +115,14 @@ class App(tk.Tk):
             column=0,
             columnspan=2,
             padx=(20, 0),
-            pady=(20, 0),
+            pady=(10, 0),
             sticky="nw",
         )
 
         self.today_is_lbl = tk.Label(
             self.today_is_frame,
             textvariable=date_variable,
+            foreground="red",
             font=("Arial", 24),
         )
         self.today_is_lbl.grid(
@@ -137,12 +133,10 @@ class App(tk.Tk):
         )
 
         # insert image
-        img = ImageTk.PhotoImage(Image.open("icons8-home-100.png"))
-        # self.tkf = tk.Frame(self)
-        # self.tkf.grid(row=0, column=3)
+        img = ImageTk.PhotoImage(Image.open("icons8-home-75.png"))
         self.img_lbl = tk.Label(self, image=img)
         self.img_lbl.image = img
-        self.img_lbl.grid(row=0, column=3, padx=(15, 0), pady=(13, 0))
+        self.img_lbl.grid(row=0, column=3, padx=(15, 0))
 
         ####################################
         # create legend
