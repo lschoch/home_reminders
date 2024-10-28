@@ -133,7 +133,7 @@ class App(tk.Tk):
         )
 
         # insert image
-        img = ImageTk.PhotoImage(Image.open("icons8-home-80.png"))
+        img = ImageTk.PhotoImage(Image.open("images/icons8-home-801.png"))
         self.img_lbl = tk.Label(self, image=img)
         self.img_lbl.image = img
         self.img_lbl.grid(row=0, column=3, padx=(15, 0))
@@ -199,7 +199,7 @@ class App(tk.Tk):
             pady=(5, 0),
         )
         ttk.Label(
-            self.legend_frame, text="coming up - ", background="#ececec"
+            self.legend_frame, text="pending - ", background="#ececec"
         ).grid(row=3, column=0, padx=(5, 0), pady=(5, 0), sticky="e")
         # end legend
         ####################################
