@@ -47,10 +47,10 @@ class App(tk.Tk):
         super().__init__(**kw)
 
         self.title("Home Reminders")
-        self.geometry("1120x360")
+        self.geometry("1115x370")
         self.style = ttk.Style()
         self.style.theme_use("clam")
-        self.rowconfigure(0, minsize=100)
+        self.rowconfigure(0, minsize=120)
 
         # create variable to prevent calling
         # treeview_on_selection_changed after refresh
@@ -76,18 +76,15 @@ class App(tk.Tk):
         self.btn = ttk.Button(
             self, text="Quit", command=self.quit_program
         ).grid(row=1, column=0, padx=20, pady=(0, 20), sticky="s")
+
         self.view_lbl = ttk.Label(
             self,
             textvariable=self.lbl_msg,
             background=self.lbl_color.get(),
             font=("Arial", 18),
         )
-        self.view_lbl.grid(
-            row=0,
-            column=1,
-            # padx=(3, 0),
-            pady=(15, 0),
-        )
+        self.view_lbl.grid(row=0, column=1, pady=(0, 35), sticky="s")
+
         self.expired_lbl = tk.Label(
             self,
             textvariable=self.expired_msg,
@@ -96,47 +93,30 @@ class App(tk.Tk):
             relief="solid",
         )
         self.expired_lbl.grid(
-            row=0,
-            column=1,
-            pady=(73, 6),
-            ipadx=4,
-            ipady=4,
+            row=0, column=1, ipadx=4, ipady=4, pady=(0, 5), sticky="s"
         )
 
-        # display current datee
+        # display current date
         date_variable = tk.StringVar()
         date_variable.set(f"Today is {date.today()}")
 
-        self.today_is_frame = tk.Frame(
-            self,
-        )
-        self.today_is_frame.grid(
-            row=0,
-            column=0,
-            columnspan=2,
-            padx=(20, 0),
-            pady=(10, 0),
-            sticky="nw",
-        )
-
         self.today_is_lbl = tk.Label(
-            self.today_is_frame,
+            self,
             textvariable=date_variable,
             foreground="red",
             font=("Helvetica", 24),
         )
-        self.today_is_lbl.grid(
-            row=0,
-            column=0,
-            padx=2,
-            pady=2,
-        )
+        self.today_is_lbl.grid(row=0, column=1, pady=(10, 0), sticky="n")
 
-        # insert image
-        img = ImageTk.PhotoImage(Image.open("images/icons8-home-801.png"))
-        self.img_lbl = tk.Label(self, image=img)
-        self.img_lbl.image = img
-        self.img_lbl.grid(row=0, column=3, padx=(15, 0))
+        # insert images
+        img = ImageTk.PhotoImage(Image.open("images/icons8-home-75.png"))
+        img_l = ImageTk.PhotoImage(Image.open("images/icons8-home-75.png"))
+        self.img_lbl_r = tk.Label(self, image=img)
+        self.img_lbl_r.image = img
+        self.img_lbl_r.grid(row=0, column=3, sticky="ew")
+        self.img_lbl_l = tk.Label(self, image=img_l)
+        self.img_lbl_l.image = img_l
+        self.img_lbl_l.grid(row=0, column=0, sticky="ew")
 
         ####################################
         # create legend
