@@ -16,7 +16,7 @@ def create_tree_widget(self):
         "period",
         "date_last",
         "date_next",
-        "source",
+        "note",
     )
     tree = ttk.Treeview(self, columns=columns, show="headings")
 
@@ -27,14 +27,14 @@ def create_tree_widget(self):
     tree.heading("period", text="Period", anchor="w")
     tree.heading("date_last", text="Last")
     tree.heading("date_next", text="Next")
-    tree.heading("source", text="Source", anchor="w")
+    tree.heading("note", text="Note", anchor="w")
     tree.column("id", width=50, anchor="center")
     tree.column("description", anchor="w")
     tree.column("frequency", width=65, anchor="center")
     tree.column("period", width=75, anchor="w")
     tree.column("date_last", width=100, anchor="center")
     tree.column("date_next", width=100, anchor="center")
-    tree.column("source", width=200, anchor="w")
+    tree.column("note", width=200, anchor="w")
 
     tree.bind("<<TreeviewSelect>>", self.on_treeview_selection_changed)
     tree.grid(row=1, column=1)

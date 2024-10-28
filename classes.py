@@ -45,11 +45,11 @@ class TopLvl(tk.Toplevel):
         self.date_last_entry = ttk.Entry(self)
         self.date_last_entry.grid(row=1, column=1, padx=(0, 15), pady=(0, 15))
 
-        ttk.Label(self, text="source", background="#ececec").grid(
+        ttk.Label(self, text="note", background="#ececec").grid(
             row=1, column=2, padx=(0, 5), pady=(0, 15), sticky="e"
         )
-        self.source_entry = ttk.Entry(self, width=48)
-        self.source_entry.grid(
+        self.note_entry = ttk.Entry(self, width=48)
+        self.note_entry.grid(
             row=1,
             column=3,
             columnspan=3,

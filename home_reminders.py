@@ -30,7 +30,7 @@ cur.execute("""
         period TEXT,
         date_last TEXT,
         date_next TEXT,
-        source TEXT)
+        note TEXT)
 """)
 
 # select data for display, bring NULLs forward so they don't get lost
@@ -250,7 +250,7 @@ class App(tk.Tk):
                 top.period_combobox.get(),
                 date_last,
                 date_next,
-                top.source_entry.get(),
+                top.note_entry.get(),
             )
             cur.execute(
                 """
@@ -260,7 +260,7 @@ class App(tk.Tk):
                     period,
                     date_last,
                     date_next,
-                    source)
+                    note)
                 VALUES (?, ?, ?, ?, ?, ?)""",
                 data_get,
             )
@@ -360,7 +360,7 @@ class App(tk.Tk):
         top.date_last_entry.insert(
             0, self.tree.item(selected_item)["values"][4]
         )
-        top.source_entry.insert(0, self.tree.item(selected_item)["values"][6])
+        top.note_entry.insert(0, self.tree.item(selected_item)["values"][6])
 
         # get_date_cmd calls get date (calendar pop-up)
         def get_date_cmd(self):
@@ -414,7 +414,7 @@ class App(tk.Tk):
                 """
                 UPDATE reminders
                 SET (
-                description, frequency, period, date_last, date_next, source) =
+                description, frequency, period, date_last, date_next, note) =
                     (?, ?, ?, ?, ?, ?)
                 WHERE id = ? """,
                 (
@@ -423,7 +423,7 @@ class App(tk.Tk):
                     top.period_combobox.get(),
                     top.date_last_entry.get(),
                     date_next,
-                    top.source_entry.get(),
+                    top.note_entry.get(),
                     self.tree.item(selected_item)["values"][0],
                 ),
             )
