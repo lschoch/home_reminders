@@ -123,7 +123,7 @@ class App(tk.Tk):
             self.today_is_frame,
             textvariable=date_variable,
             foreground="red",
-            font=("Arial", 24),
+            font=("Helvetica", 24),
         )
         self.today_is_lbl.grid(
             row=0,
@@ -133,7 +133,7 @@ class App(tk.Tk):
         )
 
         # insert image
-        img = ImageTk.PhotoImage(Image.open("icons8-home-75.png"))
+        img = ImageTk.PhotoImage(Image.open("icons8-home-80.png"))
         self.img_lbl = tk.Label(self, image=img)
         self.img_lbl.image = img
         self.img_lbl.grid(row=0, column=3, padx=(15, 0))
