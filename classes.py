@@ -10,14 +10,14 @@ class TopLvl(tk.Toplevel):
         self.config(padx=20, pady=20)
         x = master.winfo_x()
         y = master.winfo_y()
-        self.geometry("+%d+%d" % (x + 110, y + 395))
+        self.geometry("+%d+%d" % (x + 110, y + 400))
 
         # create list of values for period_combobox that will be be accessed
         # outside the combobox configuration
         self.period_list = ["days", "weeks", "months", "years"]
 
         # create entry labels and widgets for the top level
-        ttk.Label(self, text="description", background="#ececec").grid(
+        ttk.Label(self, text="item", background="#ececec").grid(
             row=0, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
         )
         self.description_entry = ttk.Entry(self)
@@ -39,7 +39,7 @@ class TopLvl(tk.Toplevel):
         self.period_combobox.grid(row=0, column=5, pady=(0, 15))
         self.period_combobox.grid(row=0, column=5, pady=(0, 15))
 
-        ttk.Label(self, text="date_last", background="#ececec").grid(
+        ttk.Label(self, text="last", background="#ececec").grid(
             row=1, column=0, padx=(0, 5), pady=(0, 15), sticky="e"
         )
         self.date_last_entry = ttk.Entry(self)
